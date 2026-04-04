@@ -1,0 +1,37 @@
+const express = require("express");
+const dbconnection = require("./db");
+const cors = require("cors")
+const userroute = require('./Routes/user_Routes')
+const adminroute = require('./Routes/admin_routes')
+
+// Express is the web framework, which handles request and response
+
+const app = express();
+// app is the instance of express used to define routes and middleware and handle requests and responses
+
+const PORTNUMBER = 5000;
+//portnumber on which server listens to
+
+//app.listen is the method that starts the server and listens to the incomming requests on that specified port number
+//the callback function is executed when the server is successfully started
+app.listen(PORTNUMBER, () => {
+    // console.log("Server is running on port number: " + PORTNUMBER);
+    console.log(`Server is running on portnumber: ${PORTNUMBER}`)
+});
+dbconnection()
+
+
+//app.get is a method that defines a route for handling request(POST,GET,DELETE,PUT)
+// /apitest is endpoint
+//req is request object that contains information about incomming request
+//res is respnse object that used to send reponse back to the client
+app.get('/apitest', (req, res) => {
+    res.send("Hello Server") //response text from server
+})
+app.use(cors())  //it accepts the request,used for security purpose
+app.use(express.json())
+// app.use('/user',require("./Routes/user_Routes"))
+app.use('/user', userroute)
+app.use('/admin', adminroute)
+
+
