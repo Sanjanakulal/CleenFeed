@@ -52,7 +52,8 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
 })(({ theme }) => ({
-  backgroundColor: "#1e3a8a",
+  // backgroundColor: "#1e3a8a",
+  backgroundColor: "#2e2a72",
   color: "#ffffff",
   transition: theme.transitions.create(['margin', 'width'], {
     easing: theme.transitions.easing.sharp,

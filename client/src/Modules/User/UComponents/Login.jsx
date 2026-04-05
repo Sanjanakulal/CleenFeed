@@ -142,7 +142,7 @@ export default function Login() {
         >
           New User?{" "}
           <a href="/Register" style={{ textDecoration: "none", color: "#1976d2" }}>
-            Register
+            Create account
           </a>
         </Typography>
       </Paper>

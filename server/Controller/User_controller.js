@@ -95,6 +95,25 @@ const Login = async (req, res) => {
         res.status(500).json({ message: "server error", error })
     }
 }
+const getprofile = async (req, res) => {
+    try {
+        const user = await usertable.findById(req.userid)
+        res.json({ success: true, udata: user })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: "server error", error })
+    }
+}
+
+const updateprofile = async (req,res) => {
+    try {
+        const updateduser = await usertable.findByIdAndUpdate(req.userid, req.body, { new: true })
+        res.json({ message: "profile updated", success: true, udetails: updateduser })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: "server error", error })
+    }
+}
 
 
-module.exports={registeruser,getuser,getuserbyid,deleteuser,updateuser,Login}
+module.exports={registeruser,getuser,getuserbyid,deleteuser,updateuser,Login,getprofile,updateprofile}

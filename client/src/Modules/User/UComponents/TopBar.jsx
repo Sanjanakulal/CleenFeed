@@ -11,15 +11,17 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import StorefrontIcon from '@mui/icons-material/Storefront';
+import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import { Navigate, useNavigate } from "react-router-dom";
+import logo from "../../../assets/logo.png"
+import ShieldIcon from '@mui/icons-material/Shield';
 
 const pages = [
   { name: "Home Feed", path: "/" },
-   { name: "My Posts", path: "/MyPosts" },
+  { name: "My Posts", path: "/MyPosts" },
   { name: "About Us", path: "/UAbout" },
   { name: "FAQ", path: "/faq" }
- 
+
 ];
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -43,79 +45,51 @@ function TopBar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-  const handlesettings =(set)=>{
-    if(set === 'Logout'){
+  const handlesettings = (set) => {
+    if (set === 'Logout') {
       alert("are you sure want to logout?")
       localStorage.removeItem('UserToken')
       navigate("/Login")
-    }else if(set === 'Profile'){
+    } else if (set === 'Profile') {
       navigate("/MyProfile")
     }
   }
   return (
     <AppBar
       position="sticky"
+
       sx={{
-        backgroundColor: "#1e3a8a",
-        boxShadow: "0px 4px 10px rgba(0,0,0,0.2)"
-      }} 
+        background: "#2e2a72",
+        boxShadow: "0 2px 10px rgba(0,0,0,0.2)"
+      }}
     >
+
       <Container maxWidth="xl">
         <Toolbar disableGutters sx={{ minHeight: "70px" }}>
-          <StorefrontIcon sx={{ fontSize: 28, mr: 1, color: "#93c5fd" }} />
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: '"Trebuchet MS", sans-serif',
-              fontWeight: 700,
-              letterSpacing: '.12rem',
-              color: 'inherit',
-              textDecoration: 'none',
 
+
+          <Box
+            onClick={() => navigate("/")}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              cursor: "pointer",
+              mr: 3
             }}
           >
-            CleenFeed
-          </Typography>
+            <VerifiedUserIcon sx={{ color: "#fff", fontSize: 28 }} />
 
-          {/* <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
+            <Typography
+              sx={{
+                ml: 1,
+                fontWeight: 600,
+                fontSize: "18px",
+                color: "#fff"
               }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{ display: { xs: 'block', md: 'none' } }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: 'center' }}>{page}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box> */}
+              CleenFeed
+            </Typography>
+          </Box>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
@@ -123,20 +97,27 @@ function TopBar() {
                 key={page.name}
                 onClick={() => navigate(page.path)}
                 sx={{
-                  mx: 2,
-                  my: 2,
-                  color: 'white',
-                  fontWeight: 600,
-                  letterSpacing: '1px',
-                  textTransform: 'capitalize',
-                  '&:hover': { color: '#93c5fd' }
+                  mx: 1,
+                  px: 2,
+                  color: "#e0e7ff",
+                  fontWeight: 500,
+                  fontSize: "14px",
+                  textTransform: "none",
+                  borderRadius: "6px",
+                  transition: "0.2s",
+
+                  '&:hover': {
+            
+                    color: "#ffffff",
+                    backgroundColor: "rgba(255,255,255,0.05)"
+                  }
                 }}
               >
                 {page.name}
               </Button>
             ))}
           </Box>
-          <StorefrontIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+          <VerifiedUserIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
           <Typography
             variant="h5"
             noWrap
@@ -155,31 +136,7 @@ function TopBar() {
           >
             CleenFeed
           </Typography>
-          {/* <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                // sx={{ my: 2, color: 'white', display: 'block' }}
-                sx={{
-                  mx: 2,
-                  my: 2,
-                  color: 'white',
-                  display: 'block',
-                  fontFamily: '"Segoe UI", sans-serif',
-                  fontWeight: 600,
-                  letterSpacing: '1px',
-                  textTransform: 'capitalize',
-                  fontSize: '16px',
-                  '&:hover': {
-                    color: '#93c5fd'
-                  }
-                }}
-              >
-                {page}
-              </Button>
-            ))}
-          </Box> */}
+
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -203,7 +160,7 @@ function TopBar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={()=> handlesettings(setting)}>
+                <MenuItem key={setting} onClick={() => handlesettings(setting)}>
                   <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
                 </MenuItem>
               ))}

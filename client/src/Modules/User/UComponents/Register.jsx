@@ -4,7 +4,7 @@ import Paper from '@mui/material/Paper'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import axios from 'axios'
-
+import Box from '@mui/material/Box';
 
 export default function Register() {
   const [formdata,setFormdata] = useState({
@@ -40,18 +40,106 @@ export default function Register() {
     // localStorage.setItem('userdetails',JSON.stringify(allusers))
     // alert("registration done!!")
   }
-  return (
-    <div>
-      <Paper elevation={20} style={{width:"550px",padding:"20px",margin:"50px auto"}}>
-     <Typography variant='h3' style={{fontFamily:"poppins",textAlign:"center"}}>Register Page</Typography>
-     <TextField variant='outlined' type='text' label='Name' name='name' fullWidth style={{marginBottom:"10px"}} onChange={handlechange}/>
-     <TextField variant='outlined' type='email' label='Email' name='email' fullWidth style={{marginBottom:"10px"}} onChange={handlechange}/>
-     <TextField variant='outlined' type='password' label='Password' name='password' fullWidth style={{marginBottom:"10px"}} onChange={handlechange}/>
-     <TextField variant='outlined' type='number'label='Phone' name='phone' fullWidth style={{marginBottom:"10px"}} onChange={handlechange}/>
-     <TextField variant='outlined' multiline rows={5} label='Address' name='address' fullWidth style={{marginBottom:"10px"}} onChange={handlechange}/>
-    <Button variant='contained' fullWidth onClick={handleregister}>Register</Button>
-     </Paper>
-      
-    </div>
-  )
+ return (
+  <Box
+    sx={{
+      minHeight: "100vh",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      background: "linear-gradient(135deg, #eef2ff, #f8fafc)"
+    }}
+  >
+    <Paper
+      elevation={0}
+      sx={{
+        width: 420,
+        p: 4,
+        borderRadius: "16px",
+        boxShadow: "0 10px 30px rgba(0,0,0,0.08)"
+      }}
+    >
+      <Typography
+        variant="h4"
+        sx={{
+          fontWeight: 500,
+          mb: 3,
+          textAlign: "center",
+          color: "#0b0b0c",
+          fontFamily:"poppins"
+        }}
+      >
+        Create Account
+      </Typography>
+
+      <TextField
+        label="Full Name"
+        name="name"
+        fullWidth
+        size="small"
+        sx={{ mb: 2 }}
+        onChange={handlechange}
+      />
+
+      <TextField
+        label="Email Address"
+        name="email"
+        type="email"
+        fullWidth
+        size="small"
+        sx={{ mb: 2 }}
+        onChange={handlechange}
+      />
+
+      <TextField
+        label="Password"
+        name="password"
+        type="password"
+        fullWidth
+        size="small"
+        sx={{ mb: 2 }}
+        onChange={handlechange}
+      />
+
+      <TextField
+        label="Phone Number"
+        name="phone"
+        fullWidth
+        size="small"
+        sx={{ mb: 2 }}
+        onChange={handlechange}
+      />
+
+      <TextField
+        label="Address"
+        name="address"
+        multiline
+        rows={3}
+        fullWidth
+        size="small"
+        sx={{ mb: 3 }}
+        onChange={handlechange}
+      />
+
+      <Button
+        variant="contained"
+        fullWidth
+        onClick={handleregister}
+        sx={{
+          py: 1.2,
+          borderRadius: "8px",
+          textTransform: "none",
+          fontWeight: 600,
+          backgroundColor: "#1e3a8a",
+
+          '&:hover': {
+            backgroundColor: "#4338ca"
+          }
+        }}
+      >
+        Register
+      </Button>
+    </Paper>
+  </Box>
+)
 }
