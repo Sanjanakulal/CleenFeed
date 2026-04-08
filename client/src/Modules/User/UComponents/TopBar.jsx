@@ -17,15 +17,19 @@ import logo from "../../../assets/logo.png"
 import ShieldIcon from '@mui/icons-material/Shield';
 
 const pages = [
-  { name: "Home Feed", path: "/" },
+  { name: "Home Feed", path: "/HomeFeed" },
   { name: "My Posts", path: "/MyPosts" },
-  { name: "About Us", path: "/UAbout" },
+  { name: "About Us", path: "/" },
   { name: "FAQ", path: "/faq" }
 
 ];
 
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
+
+const token = localStorage.getItem("UserToken")
+console.log(token)
+
+const settings = token ? ['Profile','Logout'] :['Login']
 function TopBar() {
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);

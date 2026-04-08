@@ -3,6 +3,8 @@ const dbconnection = require("./db");
 const cors = require("cors")
 const userroute = require('./Routes/user_Routes')
 const adminroute = require('./Routes/admin_routes')
+const postroute = require('./Routes/post_routes')
+const categoryroute = require('./Routes/category_routes')
 
 // Express is the web framework, which handles request and response
 
@@ -33,5 +35,7 @@ app.use(express.json())
 // app.use('/user',require("./Routes/user_Routes"))
 app.use('/user', userroute)
 app.use('/admin', adminroute)
+app.use('/post',postroute)
+app.use('/category',categoryroute)
 
 
