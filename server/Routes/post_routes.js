@@ -4,9 +4,10 @@ const {addpost,getpost,getpostbyid,deletepost,updatepost} = require('../Controll
 
 const route = express.Router();
 
+const auth = require("../Middlewear/Auth")
 const upload = require('../Middlewear/imageupload')
 
-route.post('/addpost',upload.single('postimage'),addpost)
+route.post('/addpost',auth,upload.single('postimage'),addpost)
 route.get('/getpost',getpost)  
 route.get('/getpostbyid/:id',getpostbyid)
 route.delete('/deletepost/:id',deletepost)

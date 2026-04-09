@@ -18,6 +18,7 @@ import ShieldIcon from '@mui/icons-material/Shield';
 
 const pages = [
   { name: "Home Feed", path: "/HomeFeed" },
+  {name: "Create Post", path:"/Addpost"},
   { name: "My Posts", path: "/MyPosts" },
   { name: "About Us", path: "/" },
   { name: "FAQ", path: "/faq" }

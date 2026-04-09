@@ -4,7 +4,7 @@ import { Route, Routes, useLocation } from 'react-router-dom'
 import TopBar from '../UComponents/TopBar'
 import UAbout from '../UComponents/UAbout'
 import Register from '../UComponents/Register'
-// import Addproudct from '../UComponents/Addproduct'
+import Addpost from '../UComponents/Addpost'
 // import Products from '../UComponents/Products'
 // import ProductDetails from '../UComponents/ProductDetails'
 // import Faq from '../UComponents/Faq'
@@ -23,10 +23,10 @@ function AppContent() {
         <Route path='/Register' element={<Register />} />
         <Route path='/Login' element={<Login />} />
         <Route path='/MyProfile' element={<MyProfile />} />
-        {/* <Route path='/Addproduct' element={<Addproudct/>} />
-         <Route path='/' element={<Products/>} />
+          <Route path='/Addpost' element={<Addpost/>} /> 
+          {/* <Route path='/' element={<Products/>} />
          <Route path='/product/:id' element={<ProductDetails/>} />
-         <Route path='/faq' element={<Faq/>} />  */}
+         <Route path='/faq' element={<Faq/>} />   */}
 
 
       </Routes>
