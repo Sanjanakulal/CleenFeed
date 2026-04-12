@@ -37,5 +37,6 @@ app.use('/user', userroute)
 app.use('/admin', adminroute)
 app.use('/post',postroute)
 app.use('/category',categoryroute)
+app.use("/image",express.static("./Uploads"))
 
 

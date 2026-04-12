@@ -10,6 +10,7 @@ import Addpost from '../UComponents/Addpost'
 // import Faq from '../UComponents/Faq'
 import Login from '../UComponents/Login'
 import MyProfile from '../UComponents/MyProfile'
+import MyPosts from '../UComponents/MyPosts'
 
 function AppContent() {
   const location = useLocation()
@@ -24,6 +25,8 @@ function AppContent() {
         <Route path='/Login' element={<Login />} />
         <Route path='/MyProfile' element={<MyProfile />} />
           <Route path='/Addpost' element={<Addpost/>} /> 
+          <Route path='/MyPosts' element={<MyPosts/>} /> 
+
           {/* <Route path='/' element={<Products/>} />
          <Route path='/product/:id' element={<ProductDetails/>} />
          <Route path='/faq' element={<Faq/>} />   */}

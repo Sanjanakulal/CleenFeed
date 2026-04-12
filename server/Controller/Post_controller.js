@@ -94,4 +94,40 @@ const updatepost = async(req,res)=>{
     }
 }
 
-module.exports = {addpost,getpost,getpostbyid,deletepost,updatepost}
+const getMyPosts = async (req, res) => {
+  try {
+    const posts = await posttable.find({ userId: req.userid})
+      .populate("categoryId")
+      .populate("userId", "name");
+
+    res.status(200).json({
+      message: "my posts fetched",
+      myposts: posts
+    });
+
+  } catch (error) {
+    res.status(500).json({ message: "server error", error });
+  }
+}
+
+const reportPost = async (req, res) => {
+  try {
+    const { reason } = req.body
+
+    const post = await posttable.findById(req.params.id)
+
+    post.reportCount += 1
+
+    if (post.reportCount >= 3) {
+      post.isFlagged = true
+    }
+
+    await post.save()
+
+    res.json({ message: "Reported successfully" })
+
+  } catch (error) {
+    res.status(500).json({ message: "error", error })
+  }
+}
+module.exports = {addpost,getpost,getpostbyid,deletepost,updatepost,getMyPosts,reportPost}
