@@ -14,6 +14,7 @@ const postschema = new mongoose.Schema({
     reportCount: { type: Number, default: 0 },
     isFlagged: { type: Boolean, default: false },
     postimage:{type:String}
-})
+   }, 
+   { timestamps: true })
 
 module.exports = mongoose.model("Post",postschema)

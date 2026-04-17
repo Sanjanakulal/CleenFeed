@@ -12,7 +12,7 @@ route.get('/getpost',getpost)
 route.get('/getpostbyid/:id',getpostbyid)
 route.delete('/deletepost/:id',deletepost)
 route.put('/updatepost/:id', upload.single('postimage'), updatepost)
-route.get('/myposts', auth, getMyPosts)
+route.get('/getmypost', auth, getMyPosts)
 route.put('/report/:id', reportPost)
 
 

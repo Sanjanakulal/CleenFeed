@@ -21,7 +21,7 @@ import {
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import FlagIcon from '@mui/icons-material/Flag'
 
-export default function MyPosts() {
+export default function HomeFeed() {
 
   const [posts, setPosts] = useState([])
   const [categories, setCategories] = useState([])
@@ -48,10 +48,10 @@ export default function MyPosts() {
   useEffect(() => {
     const token = localStorage.getItem("UserToken")
 
-    axios.get("http://localhost:5000/post/getmypost", {
+    axios.get("http://localhost:5000/post/getpost", {
       headers: { "auth-token": token }
     })
-      .then(res => setPosts(res.data.myposts))
+      .then(res => setPosts(res.data.allposts))
   }, [])
 
   // fetch categories
