@@ -21,7 +21,7 @@ const pages = [
   {name: "Create Post", path:"/Addpost"},
   { name: "My Posts", path: "/MyPosts" },
   { name: "About Us", path: "/" },
-  { name: "FAQ", path: "/faq" }
+  { name: "FAQ", path: "/Faq" }
 
 ];
 

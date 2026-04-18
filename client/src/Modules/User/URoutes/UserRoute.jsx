@@ -7,7 +7,7 @@ import Register from '../UComponents/Register'
 import Addpost from '../UComponents/Addpost'
 // import Products from '../UComponents/Products'
 // import ProductDetails from '../UComponents/ProductDetails'
-// import Faq from '../UComponents/Faq'
+import Faq from '../UComponents/Faq'
 import Login from '../UComponents/Login'
 import MyProfile from '../UComponents/MyProfile'
 import MyPosts from '../UComponents/MyPosts'
@@ -28,6 +28,7 @@ function AppContent() {
           <Route path='/Addpost' element={<Addpost/>} /> 
           <Route path='/MyPosts' element={<MyPosts/>} />
            <Route path='/HomeFeed' element={<HomeFeed/>} />
+           <Route path='/Faq' element={<Faq/>} />
 
 
           {/* <Route path='/' element={<Products/>} />
