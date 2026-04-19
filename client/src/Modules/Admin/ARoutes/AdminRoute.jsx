@@ -3,7 +3,11 @@ import { Route, Routes } from 'react-router-dom'
 import AdminLogin from '../AComponents/AdminLogin'
 // import AHome from '../AComponents/AHome'
 import Sidebar from '../AComponents/Sidebar'
-// import ManageUser from '../AComponents/Manageuser'
+import ManageUser from '../AComponents/ManageUser'
+import ManageCategory from '../AComponents/ManageCategory'
+import AddCategory from '../AComponents/AddCategory'
+import ManageReports from '../AComponents/ManageReports'
+
 // import ManageCategory from '../AComponents/ManageCategory'
 // import ManageProduct from '../AComponents/ManageProduct'
 // import AddCategory from '../AComponents/AddCategory'
@@ -22,6 +26,11 @@ export default function AdminRoute() {
             <Sidebar />
             <Routes>
                  <Route path='/AdminLogin' element={<AdminLogin/>}/>
+                 <Route path='/ManageUser' element={<ManageUser/>}/>
+                 <Route path='/ManageCategory' element={<ManageCategory/>}/>
+                 <Route path='/AddCategory' element={<AddCategory/>}/>
+                 <Route path='/ManageReports' element={<ManageReports/>}/>
+
                 {/* <Route path='/AHome' element={<AHome />} />
                 <Route path='/ManageUser' element={<ManageUser />} /> */}
                 {/* <Route path='/ManageCategory' element={<ManageCategory />} />

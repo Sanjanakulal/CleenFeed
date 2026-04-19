@@ -32,7 +32,7 @@ export default function HomeFeed() {
   const [selectedPostId, setSelectedPostId] = useState(null)
   const [reason, setReason] = useState("")
 
-  const reportReasons = ["Spam", "Inappropriate", "Misinformation"]
+  const reportReasons = ["Spam", "Inappropriate", "Misinformation","Fraud","Offensive Language"]
 
   // ❤️ like state (with localStorage)
   const [likedPosts, setLikedPosts] = useState(() => {

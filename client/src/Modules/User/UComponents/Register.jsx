@@ -5,8 +5,10 @@ import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import axios from 'axios'
 import Box from '@mui/material/Box';
+import { useNavigate } from 'react-router-dom';
 
 export default function Register() {
+  const navigate = useNavigate();
   const [formdata,setFormdata] = useState({
     name:'',
     email:'',
@@ -27,6 +29,7 @@ export default function Register() {
    console.log("registered user:" ,res.data)
   //  alert("registered successfully")
    alert(res.data.message)
+   navigate('/login')
   })
   .catch((error)=>{
    console.log(error)

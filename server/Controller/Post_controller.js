@@ -28,7 +28,10 @@ const addpost = async (req, res) => {
 
 const getpost = async (req, res) => {
     try {
-        const getallpost = await posttable.find().sort({ createdAt: -1 })
+        const getallpost = await posttable
+        .find()
+        .populate("categoryId")
+        .sort({ createdAt: -1 })
         console.log(getallpost)
 
         res.status(200).json({
@@ -111,24 +114,85 @@ const getMyPosts = async (req, res) => {
     }
 }
 
+// const reportPost = async (req, res) => {
+//     try {
+//         const { reason } = req.body
+
+//         const post = await posttable.findById(req.params.id)
+
+//         post.reportCount += 1
+
+//         if (post.reportCount >= 2) {
+//             post.isFlagged = true
+//         }
+
+//         await post.save()
+
+//         res.json({ message: "Reported successfully" })
+
+//     } catch (error) {
+//         res.status(500).json({ message: "error", error })
+//     }
+// }
 const reportPost = async (req, res) => {
-    try {
-        const { reason } = req.body
+  try {
+    const { reason } = req.body;
 
-        const post = await posttable.findById(req.params.id)
+    const post = await posttable.findById(req.params.id);
 
-        post.reportCount += 1
-
-        if (post.reportCount >= 2) {
-            post.isFlagged = true
-        }
-
-        await post.save()
-
-        res.json({ message: "Reported successfully" })
-
-    } catch (error) {
-        res.status(500).json({ message: "error", error })
+    if (!post) {
+      return res.status(404).json({
+        message: "Post not found"
+      });
     }
+
+    const alreadyReported = post.reportedBy.some(
+      (id) => id.toString() === req.userid
+    );
+
+    if (alreadyReported) {
+      return res.status(400).json({
+        message: "You already reported this post"
+      });
+    }
+
+    post.reportedBy.push(req.userid);
+    post.reportCount += 1;
+
+    if (post.reportCount >= 2) {
+      post.isFlagged = true;
+    }
+
+    await post.save();
+
+    res.status(200).json({
+      message: "Reported successfully"
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: "Server error",
+      error
+    });
+  }
 }
-module.exports = { addpost, getpost, getpostbyid, deletepost, updatepost, getMyPosts, reportPost }
+const getReports = async (req, res) => {
+  try {
+
+    const posts = await posttable.find({
+      reportCount: { $gt: 0 }
+    }).sort({ reportCount: -1 })
+
+    res.status(200).json({
+      message: "Reported posts fetched",
+      reportposts: posts
+    })
+
+  } catch (error) {
+    res.status(500).json({
+      message: "Server error",
+      error
+    })
+  }
+}
+module.exports = { addpost, getpost, getpostbyid, deletepost, updatepost, getMyPosts, reportPost,getReports }

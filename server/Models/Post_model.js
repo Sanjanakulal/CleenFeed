@@ -13,6 +13,18 @@ const postschema = new mongoose.Schema({
     },
     reportCount: { type: Number, default: 0 },
     isFlagged: { type: Boolean, default: false },
+     reportedBy: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User"
+    }
+  ],
+
+  reportReasons: [
+    {
+      type: String
+    }
+  ],
     postimage:{type:String}
    }, 
    { timestamps: true })
