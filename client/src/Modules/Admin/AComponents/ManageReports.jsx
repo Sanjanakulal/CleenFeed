@@ -36,18 +36,24 @@ export default function ManageReports() {
             <TableCell>Title</TableCell>
             <TableCell>Description</TableCell>
             <TableCell>Reports</TableCell>
+            <TableCell>Reasons</TableCell>
             <TableCell>Status</TableCell>
             <TableCell>Action</TableCell>
           </TableRow>
         </TableHead>
 
         <TableBody>
-          {reports.map((row,index)=>(
+          {reports.map((row, index) => (
             <TableRow key={row._id}>
-              <TableCell>{index+1}</TableCell>
+              <TableCell>{index + 1}</TableCell>
               <TableCell>{row.title}</TableCell>
               <TableCell>{row.description}</TableCell>
               <TableCell>{row.reportCount}</TableCell>
+              <TableCell>
+                {row.reportReasons.length > 0
+                  ? row.reportReasons.join(", ")
+                  : "No Reasons"}
+              </TableCell>
               <TableCell>
                 {row.isFlagged ? "Flagged" : "Reported"}
               </TableCell>
@@ -56,7 +62,7 @@ export default function ManageReports() {
                 <Button
                   color="error"
                   variant="contained"
-                  onClick={()=>handleDelete(row._id)}
+                  onClick={() => handleDelete(row._id)}
                 >
                   Delete
                 </Button>

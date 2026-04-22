@@ -159,6 +159,10 @@ const reportPost = async (req, res) => {
     post.reportedBy.push(req.userid);
     post.reportCount += 1;
 
+    if (reason) {
+      post.reportReasons.push(reason);
+    }
+
     if (post.reportCount >= 2) {
       post.isFlagged = true;
     }
