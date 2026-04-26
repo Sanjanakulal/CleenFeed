@@ -180,12 +180,34 @@ const reportPost = async (req, res) => {
     });
   }
 }
+// const getReports = async (req, res) => {
+//   try {
+
+//     const posts = await posttable.find({
+//       reportCount: { $gt: 0 }
+//     }).sort({ reportCount: -1 })
+
+//     res.status(200).json({
+//       message: "Reported posts fetched",
+//       reportposts: posts
+//     })
+
+//   } catch (error) {
+//     res.status(500).json({
+//       message: "Server error",
+//       error
+//     })
+//   }
+// }
+
 const getReports = async (req, res) => {
   try {
 
     const posts = await posttable.find({
       reportCount: { $gt: 0 }
-    }).sort({ reportCount: -1 })
+    })
+    .populate("userId", "name trustScore")
+    .sort({ reportCount: -1 })
 
     res.status(200).json({
       message: "Reported posts fetched",
