@@ -33,6 +33,8 @@ export default function ManageReports() {
         <TableHead>
           <TableRow>
             <TableCell>SL.No</TableCell>
+            <TableCell>User</TableCell>
+            <TableCell>Trust Score</TableCell>
             <TableCell>Title</TableCell>
             <TableCell>Description</TableCell>
             <TableCell>Reports</TableCell>
@@ -46,6 +48,8 @@ export default function ManageReports() {
           {reports.map((row, index) => (
             <TableRow key={row._id}>
               <TableCell>{index + 1}</TableCell>
+              <TableCell>{row.userId?.name}</TableCell>
+              <TableCell>{row.userId?.trustScore}</TableCell>
               <TableCell>{row.title}</TableCell>
               <TableCell>{row.description}</TableCell>
               <TableCell>{row.reportCount}</TableCell>
