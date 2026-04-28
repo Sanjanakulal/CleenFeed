@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from 'react'
+import MoreVertIcon from '@mui/icons-material/MoreVert'
+import Menu from '@mui/material/Menu'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import {
   Card,
@@ -23,16 +26,21 @@ import FlagIcon from '@mui/icons-material/Flag'
 
 export default function MyPosts() {
 
+  const navigate = useNavigate()
+
   const [posts, setPosts] = useState([])
   const [categories, setCategories] = useState([])
   const [selectedCategory, setSelectedCategory] = useState("All")
+
+  const [anchorEl, setAnchorEl] = useState(null)
+  const [selectedId, setSelectedId] = useState(null)
 
   // 🚩 report state
   const [openReport, setOpenReport] = useState(false)
   const [selectedPostId, setSelectedPostId] = useState(null)
   const [reason, setReason] = useState("")
 
-  const reportReasons = ["Spam", "Inappropriate", "Misinformation","Fraud","Offensive Language"]
+  const reportReasons = ["Spam", "Inappropriate", "Misinformation", "Fraud", "Offensive Language"]
 
   // ❤️ like state (with localStorage)
   const [likedPosts, setLikedPosts] = useState(() => {
@@ -96,6 +104,36 @@ export default function MyPosts() {
         setOpenReport(false)
         setReason("")
       })
+  }
+
+  const handleMenuOpen = (event, id) => {
+    setAnchorEl(event.currentTarget)
+    setSelectedId(id)
+  }
+
+  const handleMenuClose = () => {
+    setAnchorEl(null)
+  }
+
+  const handleDelete = async (id) => {
+
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this post?"
+    )
+
+    if (!confirmDelete) return
+
+    const token = localStorage.getItem("UserToken")
+
+    await axios.delete(
+      `http://localhost:5000/post/deletepost/${id}`,
+      {
+        headers: { "auth-token": token }
+      }
+    )
+
+    setPosts(posts.filter(post => post._id !== id))
+    handleMenuClose()
   }
 
   return (
@@ -225,8 +263,8 @@ export default function MyPosts() {
                   />
                 </IconButton>
 
-                <IconButton onClick={() => handleOpenReport(post._id)}>
-                  <FlagIcon color="warning" />
+                <IconButton onClick={(e) => handleMenuOpen(e, post._id)}>
+                  <MoreVertIcon />
                 </IconButton>
 
               </CardActions>
@@ -267,6 +305,26 @@ export default function MyPosts() {
         </DialogActions>
 
       </Dialog>
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleMenuClose}
+      >
+
+        <MenuItem
+          onClick={() => navigate(`/updatepost/${selectedId}`)}
+        >
+          Update
+        </MenuItem>
+
+        <MenuItem
+          onClick={() => handleDelete(selectedId)}
+          sx={{ color: "red" }}
+        >
+          Delete
+        </MenuItem>
+
+      </Menu>
 
     </Box>
   )

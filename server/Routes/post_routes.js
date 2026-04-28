@@ -10,10 +10,10 @@ const upload = require('../Middlewear/imageupload')
 route.post('/addpost',auth,upload.single('postimage'),addpost)
 route.get('/getpost',getpost)  
 route.get('/getpostbyid/:id',getpostbyid)
-route.delete('/deletepost/:id',deletepost)
-route.put('/updatepost/:id', upload.single('postimage'), updatepost)
+route.delete('/deletepost/:id',auth,deletepost)
+route.put('/updatepost/:id',auth,upload.single('postimage'), updatepost)
 route.get('/getmypost', auth, getMyPosts)
-route.put('/report/:id', reportPost)
+route.put('/report/:id', auth, reportPost)
 route.get('/getreports', getReports)
 
 

@@ -12,6 +12,7 @@ import Login from '../UComponents/Login'
 import MyProfile from '../UComponents/MyProfile'
 import MyPosts from '../UComponents/MyPosts'
 import HomeFeed from '../UComponents/HomeFeed'
+import UpdatePost from '../UComponents/UpdatePost'
 
 function AppContent() {
   const location = useLocation()
@@ -29,6 +30,7 @@ function AppContent() {
           <Route path='/MyPosts' element={<MyPosts/>} />
            <Route path='/HomeFeed' element={<HomeFeed/>} />
            <Route path='/Faq' element={<Faq/>} />
+           <Route path='/UpdatePost/:id' element={<UpdatePost/>} />
 
 
           {/* <Route path='/' element={<Products/>} />

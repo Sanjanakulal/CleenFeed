@@ -18,7 +18,7 @@ import ShieldIcon from '@mui/icons-material/Shield';
 
 const pages = [
   { name: "Home Feed", path: "/HomeFeed" },
-  {name: "Create Post", path:"/Addpost"},
+  { name: "Create Post", path: "/Addpost" },
   { name: "My Posts", path: "/MyPosts" },
   { name: "About Us", path: "/" },
   { name: "FAQ", path: "/Faq" }
@@ -30,8 +30,9 @@ const pages = [
 const token = localStorage.getItem("UserToken")
 console.log(token)
 
-const settings = token ? ['Profile','Logout'] :['Login']
+const settings = token ? ['Profile', 'Logout'] : ['Login']
 function TopBar() {
+  const name = localStorage.getItem("name");
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -54,6 +55,7 @@ function TopBar() {
     if (set === 'Logout') {
       alert("are you sure want to logout?")
       localStorage.removeItem('UserToken')
+      localStorage.removeItem('name')
       navigate("/Login")
     } else if (set === 'Profile') {
       navigate("/MyProfile")
@@ -112,7 +114,7 @@ function TopBar() {
                   transition: "0.2s",
 
                   '&:hover': {
-            
+
                     color: "#ffffff",
                     backgroundColor: "rgba(255,255,255,0.05)"
                   }
@@ -145,7 +147,10 @@ function TopBar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                {/* <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" /> */}
+                <Avatar sx={{ bgcolor: "#5c6bc0" }}>
+                  {name?.charAt(0).toUpperCase() || "U"}
+                </Avatar>
               </IconButton>
             </Tooltip>
             <Menu

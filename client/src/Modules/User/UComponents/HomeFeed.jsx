@@ -32,7 +32,7 @@ export default function HomeFeed() {
   const [selectedPostId, setSelectedPostId] = useState(null)
   const [reason, setReason] = useState("")
 
-  const reportReasons = ["Spam", "Inappropriate", "Misinformation","Fraud","Offensive Language"]
+  const reportReasons = ["Spam", "Inappropriate", "Misinformation", "Fraud", "Offensive Language"]
 
   // ❤️ like state (with localStorage)
   const [likedPosts, setLikedPosts] = useState(() => {
@@ -82,19 +82,60 @@ export default function HomeFeed() {
   }
 
   // 🚩 submit report
+  // const handleSubmitReport = () => {
+  //   if (!reason) {
+  //     alert("Please select a reason")
+  //     return
+  //   }
+
+  //   axios.put(`http://localhost:5000/post/report/${selectedPostId}`, {
+  //     reason
+  //   })
+  //     .then(() => {
+  //       alert("Post reported")
+  //       setOpenReport(false)
+  //       setReason("")
+  //     })
+  //     .catch((error) => {
+  //       alert(error.response.data.message)
+  //     })
+  // }
+
   const handleSubmitReport = () => {
     if (!reason) {
       alert("Please select a reason")
       return
     }
 
-    axios.put(`http://localhost:5000/post/report/${selectedPostId}`, {
-      reason
-    })
-      .then(() => {
-        alert("Post reported")
+    const token = localStorage.getItem("UserToken")
+
+    axios.put(
+      `http://localhost:5000/post/report/${selectedPostId}`,
+      { reason },
+      {
+        headers: {
+          "auth-token": token
+        }
+      }
+    )
+      .then((res) => {
+        alert("Post reported successfully")
         setOpenReport(false)
         setReason("")
+      })
+      // .catch((error) => {
+
+      //   if (error.response?.status === 400) {
+      //     alert("You already reported this post")
+      //   }
+
+      // })
+      .catch((error) => {
+        if (error.response?.status === 400) {
+          alert("You already reported this post")
+        } else {
+          alert("Something went wrong")
+        }
       })
   }
 
@@ -182,16 +223,77 @@ export default function HomeFeed() {
             >
 
               {/* IMAGE */}
-              {post.postimage && (
+              {/* {post.postimage && (
                 <CardMedia
                   component="img"
                   image={`http://localhost:5000/image/${post.postimage}`}
                   sx={{ height: "160px", objectFit: "cover" }}
                 />
-              )}
+              )} */}
+              {post.postimage && (
+  <Box sx={{ position: "relative" }}>
+
+    <CardMedia
+      component="img"
+      image={`http://localhost:5000/image/${post.postimage}`}
+      sx={{
+        height: "160px",
+        objectFit: "cover"
+      }}
+    />
+
+    <Box
+  sx={{
+    position: "absolute",
+    top: 10,
+    left: 10,
+    display: "flex",
+    alignItems: "center",
+    gap: 1,
+    px: 1.2,
+    py: 0.5,
+    borderRadius: "20px",
+    background: "rgba(0,0,0,0.45)",
+    backdropFilter: "blur(6px)",
+    boxShadow: "0 2px 8px rgba(0,0,0,0.25)",
+    color: "#fff"
+  }}
+>
+    
+
+      <Box
+        sx={{
+          width: 24,
+          height: 24,
+          borderRadius: "50%",
+          background: "#5c6bc0",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: "12px",
+          fontWeight: 700
+        }}
+      >
+        {post.userId?.name?.charAt(0).toUpperCase()}
+      </Box>
+
+      <Typography
+        sx={{
+          fontSize: "13px",
+          fontWeight: 600
+        }}
+      >
+        {post.userId?.name}
+      </Typography>
+
+    </Box>
+
+  </Box>
+)}
 
               {/* CONTENT */}
               <CardContent sx={{ flexGrow: 1 }}>
+                
 
                 <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
                   {post.title}
