@@ -35,6 +35,7 @@ export default function Login() {
         if (res.data.success) {
           localStorage.setItem('UserToken', res.data.token)
           localStorage.setItem('name', res.data.name)
+          localStorage.setItem('userid', res.data.userid)
           alert("Login successful")
           navigate('/')
         }

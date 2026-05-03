@@ -65,22 +65,6 @@ const getpostbyid = async (req, res) => {
   }
 }
 
-// const deletepost = async (req, res) => {
-//   try {
-//     const d_id = req.params.id
-//     const deletepost = await posttable.findByIdAndDelete(d_id)
-//     console.log(deletepost)
-
-//     res.status(200).json({
-//       message: "post deleted",
-//       d_post: deletepost
-//     })
-
-//   } catch (error) {
-//     console.log(error)
-//     res.status(500).json({ message: "server error", error })
-//   }
-// }
 
 const deletepost = async (req, res) => {
   try {
@@ -210,4 +194,49 @@ const getReports = async (req, res) => {
     })
   }
 }
-module.exports = { addpost, getpost, getpostbyid, deletepost, updatepost, getMyPosts, reportPost, getReports }
+
+const likePost = async (req, res) => {
+  try {
+    const postId = req.params.id
+    const userId = req.userid
+
+    const post = await posttable.findById(postId)
+
+    if (!post) {
+      return res.status(404).json({
+        message: "Post not found"
+      })
+    }
+
+    const alreadyLiked = post.likedBy.includes(userId)
+
+    if (alreadyLiked) {
+      post.likedBy.pull(userId)
+      post.likesCount -= 1
+
+      await post.save()
+
+      return res.status(200).json({
+        message: "Post unliked",
+        post
+      })
+    } else {
+      post.likedBy.push(userId)
+      post.likesCount += 1
+
+      await post.save()
+
+      return res.status(200).json({
+        message: "Post liked",
+        post
+      })
+    }
+
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      message: "Server error"
+    })
+  }
+}
+module.exports = { addpost, getpost, getpostbyid, deletepost, updatepost, getMyPosts, reportPost, getReports, likePost }

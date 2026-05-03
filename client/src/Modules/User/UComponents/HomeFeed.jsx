@@ -35,14 +35,11 @@ export default function HomeFeed() {
   const reportReasons = ["Spam", "Inappropriate", "Misinformation", "Fraud", "Offensive Language"]
 
   // ❤️ like state (with localStorage)
-  const [likedPosts, setLikedPosts] = useState(() => {
-    const saved = localStorage.getItem("likedPosts")
-    return saved ? JSON.parse(saved) : []
-  })
+  const [likedPosts, setLikedPosts] = useState([])
 
-  useEffect(() => {
-    localStorage.setItem("likedPosts", JSON.stringify(likedPosts))
-  }, [likedPosts])
+  // useEffect(() => {
+  //   localStorage.setItem("likedPosts", JSON.stringify(likedPosts))
+  // }, [likedPosts])
 
   // fetch posts
   useEffect(() => {
@@ -67,39 +64,49 @@ export default function HomeFeed() {
       : posts.filter(p => p.categoryId?._id === selectedCategory)
 
   // ❤️ like
-  const handleLike = (id) => {
-    if (likedPosts.includes(id)) {
-      setLikedPosts(likedPosts.filter(pid => pid !== id))
-    } else {
-      setLikedPosts([...likedPosts, id])
+  // const handleLike = (id) => {
+  //   if (likedPosts.includes(id)) {
+  //     setLikedPosts(likedPosts.filter(pid => pid !== id))
+  //   } else {
+  //     setLikedPosts([...likedPosts, id])
+  //   }
+  // }
+  const handleLike = async (id) => {
+    try {
+      const token = localStorage.getItem("UserToken")
+
+      await axios.post(
+        `http://localhost:5000/post/like/${id}`,
+        {},
+        {
+          headers: {
+            "auth-token": token
+          }
+        }
+      )
+
+      const res = await axios.get(
+        "http://localhost:5000/post/getpost",
+        {
+          headers: {
+            "auth-token": token
+          }
+        }
+      )
+
+      setPosts(res.data.allposts)
+
+    } catch (error) {
+      alert("Unable to like post")
     }
   }
-
   // 🚩 open dialog
   const handleOpenReport = (id) => {
     setSelectedPostId(id)
     setOpenReport(true)
   }
 
-  // 🚩 submit report
-  // const handleSubmitReport = () => {
-  //   if (!reason) {
-  //     alert("Please select a reason")
-  //     return
-  //   }
 
-  //   axios.put(`http://localhost:5000/post/report/${selectedPostId}`, {
-  //     reason
-  //   })
-  //     .then(() => {
-  //       alert("Post reported")
-  //       setOpenReport(false)
-  //       setReason("")
-  //     })
-  //     .catch((error) => {
-  //       alert(error.response.data.message)
-  //     })
-  // }
 
   const handleSubmitReport = () => {
     if (!reason) {
@@ -231,69 +238,69 @@ export default function HomeFeed() {
                 />
               )} */}
               {post.postimage && (
-  <Box sx={{ position: "relative" }}>
+                <Box sx={{ position: "relative" }}>
 
-    <CardMedia
-      component="img"
-      image={`http://localhost:5000/image/${post.postimage}`}
-      sx={{
-        height: "160px",
-        objectFit: "cover"
-      }}
-    />
+                  <CardMedia
+                    component="img"
+                    image={`http://localhost:5000/image/${post.postimage}`}
+                    sx={{
+                      height: "160px",
+                      objectFit: "cover"
+                    }}
+                  />
 
-    <Box
-  sx={{
-    position: "absolute",
-    top: 10,
-    left: 10,
-    display: "flex",
-    alignItems: "center",
-    gap: 1,
-    px: 1.2,
-    py: 0.5,
-    borderRadius: "20px",
-    background: "rgba(0,0,0,0.45)",
-    backdropFilter: "blur(6px)",
-    boxShadow: "0 2px 8px rgba(0,0,0,0.25)",
-    color: "#fff"
-  }}
->
-    
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      top: 10,
+                      left: 10,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 1,
+                      px: 1.2,
+                      py: 0.5,
+                      borderRadius: "20px",
+                      background: "rgba(0,0,0,0.45)",
+                      backdropFilter: "blur(6px)",
+                      boxShadow: "0 2px 8px rgba(0,0,0,0.25)",
+                      color: "#fff"
+                    }}
+                  >
 
-      <Box
-        sx={{
-          width: 24,
-          height: 24,
-          borderRadius: "50%",
-          background: "#5c6bc0",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontSize: "12px",
-          fontWeight: 700
-        }}
-      >
-        {post.userId?.name?.charAt(0).toUpperCase()}
-      </Box>
 
-      <Typography
-        sx={{
-          fontSize: "13px",
-          fontWeight: 600
-        }}
-      >
-        {post.userId?.name}
-      </Typography>
+                    <Box
+                      sx={{
+                        width: 24,
+                        height: 24,
+                        borderRadius: "50%",
+                        background: "#5c6bc0",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontSize: "12px",
+                        fontWeight: 700
+                      }}
+                    >
+                      {post.userId?.name?.charAt(0).toUpperCase()}
+                    </Box>
 
-    </Box>
+                    <Typography
+                      sx={{
+                        fontSize: "13px",
+                        fontWeight: 600
+                      }}
+                    >
+                      {post.userId?.name}
+                    </Typography>
 
-  </Box>
-)}
+                  </Box>
+
+                </Box>
+              )}
 
               {/* CONTENT */}
               <CardContent sx={{ flexGrow: 1 }}>
-                
+
 
                 <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
                   {post.title}
@@ -321,10 +328,25 @@ export default function HomeFeed() {
               {/* ACTIONS */}
               <CardActions sx={{ justifyContent: "space-between" }}>
 
+                {/* <IconButton onClick={() => handleLike(post._id)}>
+                  <FavoriteIcon
+                   color={post.likedBy?.includes(localStorage.getItem("userid")) ? "error" : "disabled"}
+                  />
+                </IconButton> */}
                 <IconButton onClick={() => handleLike(post._id)}>
                   <FavoriteIcon
-                    color={likedPosts.includes(post._id) ? "error" : "disabled"}
+                    color={
+                      post.likedBy?.some(
+                        (id) => id.toString() === localStorage.getItem("userid")
+                      )
+                        ? "error"
+                        : "disabled"
+                    }
                   />
+
+                  <Typography sx={{ fontSize: "12px", ml: 0.5 }}>
+                    {post.likesCount}
+                  </Typography>
                 </IconButton>
 
                 <IconButton onClick={() => handleOpenReport(post._id)}>
