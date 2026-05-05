@@ -1,7 +1,7 @@
 import React from 'react'
 import { Route, Routes, useLocation } from 'react-router-dom'
 // import UHome from '../UComponents/UHome'
-import TopBar from '../UComponents/TopBar'
+
 import UAbout from '../UComponents/UAbout'
 import Register from '../UComponents/Register'
 import Addpost from '../UComponents/Addpost'
@@ -13,6 +13,7 @@ import MyProfile from '../UComponents/MyProfile'
 import MyPosts from '../UComponents/MyPosts'
 import HomeFeed from '../UComponents/HomeFeed'
 import UpdatePost from '../UComponents/UpdatePost'
+import TopBar from '../UComponents/TopBar'
 
 function AppContent() {
   const location = useLocation()
@@ -22,8 +23,8 @@ function AppContent() {
       {!hidetopbar.includes(location.pathname) && <TopBar />}
       <Routes>
         
-         <Route path='/' element={<UAbout/>}/> 
-        <Route path='/Register' element={<Register />} />
+         <Route path='/UAbout' element={<UAbout/>}/> 
+        <Route path='/' element={<Register />} />
         <Route path='/Login' element={<Login />} />
         <Route path='/MyProfile' element={<MyProfile />} />
           <Route path='/Addpost' element={<Addpost/>} /> 

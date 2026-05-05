@@ -140,17 +140,24 @@ export default function ManageReports() {
       })
   }, [])
 
-  const handleDelete = (id) => {
-    axios.delete(`http://localhost:5000/post/deletepost/${id}`)
-      .then((res) => {
-        alert(res.data.message)
-        setReports((prev) => prev.filter((item) => item._id !== id))
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-  }
 
+
+  const handleDelete = (id) => {
+  const token = localStorage.getItem("UserToken");
+
+  axios.delete(`http://localhost:5000/post/deletepost/${id}`, {
+    headers: {
+      "auth-token": token   
+    }
+  })
+  .then((res) => {
+    alert(res.data.message);
+    fetchReports();   
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+};
   return (
     <TableContainer
       component={Paper}
