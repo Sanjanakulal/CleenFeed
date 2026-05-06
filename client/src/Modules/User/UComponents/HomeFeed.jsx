@@ -1,5 +1,403 @@
+// import React, { useEffect, useState } from 'react'
+// import axios from 'axios'
+// import {
+//   Card,
+//   CardContent,
+//   CardMedia,
+//   Typography,
+//   FormControl,
+//   Select,
+//   MenuItem,
+//   Box,
+//   CardActions,
+//   IconButton,
+//   Dialog,
+//   DialogTitle,
+//   DialogContent,
+//   DialogActions,
+//   Button
+// } from '@mui/material'
+
+// import FavoriteIcon from '@mui/icons-material/Favorite'
+// import FlagIcon from '@mui/icons-material/Flag'
+
+// export default function HomeFeed() {
+
+//   const [posts, setPosts] = useState([])
+//   const [categories, setCategories] = useState([])
+//   const [selectedCategory, setSelectedCategory] = useState("All")
+
+//   // 🚩 report state
+//   const [openReport, setOpenReport] = useState(false)
+//   const [selectedPostId, setSelectedPostId] = useState(null)
+//   const [reason, setReason] = useState("")
+
+//   const reportReasons = ["Spam", "Inappropriate", "Misinformation", "Fraud", "Offensive Language"]
+
+//   // ❤️ like state (with localStorage)
+//   const [likedPosts, setLikedPosts] = useState([])
+
+//   // useEffect(() => {
+//   //   localStorage.setItem("likedPosts", JSON.stringify(likedPosts))
+//   // }, [likedPosts])
+
+//   // fetch posts
+//   useEffect(() => {
+//     const token = localStorage.getItem("UserToken")
+
+//     axios.get("http://localhost:5000/post/getpost", {
+//       headers: { "auth-token": token }
+//     })
+//       .then(res => setPosts(res.data.allposts))
+//   }, [])
+
+//   // fetch categories
+//   useEffect(() => {
+//     axios.get("http://localhost:5000/category/getcategory")
+//       .then(res => setCategories(res.data.allcategory))
+//   }, [])
+
+//   // filter posts
+//   const filteredPosts =
+//     selectedCategory === "All"
+//       ? posts
+//       : posts.filter(p => p.categoryId?._id === selectedCategory)
+
+//   // ❤️ like
+//   // const handleLike = (id) => {
+//   //   if (likedPosts.includes(id)) {
+//   //     setLikedPosts(likedPosts.filter(pid => pid !== id))
+//   //   } else {
+//   //     setLikedPosts([...likedPosts, id])
+//   //   }
+//   // }
+//   const handleLike = async (id) => {
+//     try {
+//       const token = localStorage.getItem("UserToken")
+
+//       await axios.post(
+//         `http://localhost:5000/post/like/${id}`,
+//         {},
+//         {
+//           headers: {
+//             "auth-token": token
+//           }
+//         }
+//       )
+
+//       const res = await axios.get(
+//         "http://localhost:5000/post/getpost",
+//         {
+//           headers: {
+//             "auth-token": token
+//           }
+//         }
+//       )
+
+//       setPosts(res.data.allposts)
+
+//     } catch (error) {
+//       alert("Unable to like post")
+//     }
+//   }
+//   // 🚩 open dialog
+//   const handleOpenReport = (id) => {
+//     setSelectedPostId(id)
+//     setOpenReport(true)
+//   }
+
+
+
+//   const handleSubmitReport = () => {
+//     if (!reason) {
+//       alert("Please select a reason")
+//       return
+//     }
+
+//     const token = localStorage.getItem("UserToken")
+
+//     axios.put(
+//       `http://localhost:5000/post/report/${selectedPostId}`,
+//       { reason },
+//       {
+//         headers: {
+//           "auth-token": token
+//         }
+//       }
+//     )
+//       .then((res) => {
+//         alert("Post reported successfully")
+//         setOpenReport(false)
+//         setReason("")
+//       })
+//       // .catch((error) => {
+
+//       //   if (error.response?.status === 400) {
+//       //     alert("You already reported this post")
+//       //   }
+
+//       // })
+//       .catch((error) => {
+//         if (error.response?.status === 400) {
+//           alert("You already reported this post")
+//         } else {
+//           alert("Something went wrong")
+//         }
+//       })
+//   }
+
+//   return (
+//     <Box sx={{ padding: "20px", background: "#f4f6f9", minHeight: "100vh" }}>
+
+//       {/* FILTER */}
+//       <Box sx={{ maxWidth: "250px", marginBottom: "20px" }}>
+//         <FormControl fullWidth size="small">
+//           <Select
+//             value={selectedCategory}
+//             onChange={(e) => setSelectedCategory(e.target.value)}
+//           >
+//             <MenuItem value="All">All Categories</MenuItem>
+//             {categories.map(cat => (
+//               <MenuItem key={cat._id} value={cat._id}>
+//                 {cat.category_name}
+//               </MenuItem>
+//             ))}
+//           </Select>
+//         </FormControl>
+//       </Box>
+
+//       {/* EMPTY STATE OR POSTS */}
+//       {filteredPosts.length === 0 ? (
+
+//         <Box
+//           sx={{
+//             textAlign: "center",
+//             marginTop: "80px",
+//             width: "100%"
+//           }}
+//         >
+
+//           <Typography variant="h6" sx={{ mb: 2 }}>
+//             No posts created yet 😕
+//           </Typography>
+
+//           <Typography variant="body2" sx={{ mb: 3, color: "gray" }}>
+//             Start sharing your ideas by creating your first post
+//           </Typography>
+
+//           <Button
+//             variant="contained"
+//             onClick={() => window.location.href = "/addpost"}
+//             sx={{
+//               backgroundColor: "#1e40af",
+//               textTransform: "none"
+//             }}
+//           >
+//             Create Post
+//           </Button>
+
+//         </Box>
+
+//       ) : (
+
+//         <Box
+//           sx={{
+//             display: "grid",
+//             gridTemplateColumns: {
+//               xs: "1fr",
+//               sm: "repeat(2, 1fr)",
+//               md: "repeat(3, 1fr)",
+//               lg: "repeat(4, 1fr)"
+//             },
+//             gap: "16px"
+//           }}
+//         >
+
+//           {filteredPosts.map(post => (
+
+//             <Card
+//               key={post._id}
+//               sx={{
+//                 borderRadius: "12px",
+//                 display: "flex",
+//                 flexDirection: "column",
+//                 height: "100%",
+//                 boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+//                 "&:hover": {
+//                   transform: "translateY(-4px)"
+//                 }
+//               }}
+//             >
+
+//               {/* IMAGE */}
+//               {/* {post.postimage && (
+//                 <CardMedia
+//                   component="img"
+//                   image={`http://localhost:5000/image/${post.postimage}`}
+//                   sx={{ height: "160px", objectFit: "cover" }}
+//                 />
+//               )} */}
+//               {post.postimage && (
+//                 <Box sx={{ position: "relative" }}>
+
+//                   <CardMedia
+//                     component="img"
+//                     image={`http://localhost:5000/image/${post.postimage}`}
+//                     sx={{
+//                       height: "160px",
+//                       objectFit: "cover"
+//                     }}
+//                   />
+
+//                   <Box
+//                     sx={{
+//                       position: "absolute",
+//                       top: 10,
+//                       left: 10,
+//                       display: "flex",
+//                       alignItems: "center",
+//                       gap: 1,
+//                       px: 1.2,
+//                       py: 0.5,
+//                       borderRadius: "20px",
+//                       background: "rgba(0,0,0,0.45)",
+//                       backdropFilter: "blur(6px)",
+//                       boxShadow: "0 2px 8px rgba(0,0,0,0.25)",
+//                       color: "#fff"
+//                     }}
+//                   >
+
+
+//                     <Box
+//                       sx={{
+//                         width: 24,
+//                         height: 24,
+//                         borderRadius: "50%",
+//                         background: "#5c6bc0",
+//                         display: "flex",
+//                         alignItems: "center",
+//                         justifyContent: "center",
+//                         fontSize: "12px",
+//                         fontWeight: 700
+//                       }}
+//                     >
+//                       {post.userId?.name?.charAt(0).toUpperCase()}
+//                     </Box>
+
+//                     <Typography
+//                       sx={{
+//                         fontSize: "13px",
+//                         fontWeight: 600
+//                       }}
+//                     >
+//                       {post.userId?.name}
+//                     </Typography>
+
+//                   </Box>
+
+//                 </Box>
+//               )}
+
+//               {/* CONTENT */}
+//               <CardContent sx={{ flexGrow: 1 }}>
+
+
+//                 <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+//                   {post.title}
+//                 </Typography>
+
+//                 <Typography
+//                   variant="body2"
+//                   sx={{
+//                     fontSize: "12px",
+//                     display: "-webkit-box",
+//                     WebkitLineClamp: 3,
+//                     WebkitBoxOrient: "vertical",
+//                     overflow: "hidden"
+//                   }}
+//                 >
+//                   {post.description}
+//                 </Typography>
+
+//                 <Typography sx={{ fontSize: "11px", color: "#1e40af", mt: 1 }}>
+//                   #{post.categoryId?.category_name}
+//                 </Typography>
+
+//               </CardContent>
+
+//               {/* ACTIONS */}
+//               <CardActions sx={{ justifyContent: "space-between" }}>
+
+//                 {/* <IconButton onClick={() => handleLike(post._id)}>
+//                   <FavoriteIcon
+//                    color={post.likedBy?.includes(localStorage.getItem("userid")) ? "error" : "disabled"}
+//                   />
+//                 </IconButton> */}
+//                 <IconButton onClick={() => handleLike(post._id)}>
+//                   <FavoriteIcon
+//                     color={
+//                       post.likedBy?.some(
+//                         (id) => id.toString() === localStorage.getItem("userid")
+//                       )
+//                         ? "error"
+//                         : "disabled"
+//                     }
+//                   />
+
+//                   <Typography sx={{ fontSize: "12px", ml: 0.5 }}>
+//                     {post.likesCount}
+//                   </Typography>
+//                 </IconButton>
+
+//                 <IconButton onClick={() => handleOpenReport(post._id)}>
+//                   <FlagIcon color="warning" />
+//                 </IconButton>
+
+//               </CardActions>
+
+//             </Card>
+
+//           ))}
+
+//         </Box>
+
+//       )}
+
+//       {/* REPORT DIALOG */}
+//       <Dialog open={openReport} onClose={() => setOpenReport(false)}>
+
+//         <DialogTitle>Why are you reporting this post?</DialogTitle>
+
+//         <DialogContent>
+
+//           <select
+//             value={reason}
+//             onChange={(e) => setReason(e.target.value)}
+//             style={{ width: "100%", padding: "10px", marginTop: "10px" }}
+//           >
+//             <option value="">Select reason</option>
+//             {reportReasons.map((r, i) => (
+//               <option key={i} value={r}>{r}</option>
+//             ))}
+//           </select>
+
+//         </DialogContent>
+
+//         <DialogActions>
+//           <Button onClick={() => setOpenReport(false)}>Cancel</Button>
+//           <Button variant="contained" onClick={handleSubmitReport}>
+//             Submit
+//           </Button>
+//         </DialogActions>
+
+//       </Dialog>
+
+//     </Box>
+//   )
+// }
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+
 import {
   Card,
   CardContent,
@@ -19,7 +417,7 @@ import {
 } from '@mui/material'
 
 import FavoriteIcon from '@mui/icons-material/Favorite'
-import FlagIcon from '@mui/icons-material/Flag'
+import FlagRoundedIcon from '@mui/icons-material/FlagRounded'
 
 export default function HomeFeed() {
 
@@ -32,29 +430,32 @@ export default function HomeFeed() {
   const [selectedPostId, setSelectedPostId] = useState(null)
   const [reason, setReason] = useState("")
 
-  const reportReasons = ["Spam", "Inappropriate", "Misinformation", "Fraud", "Offensive Language"]
-
-  // ❤️ like state (with localStorage)
-  const [likedPosts, setLikedPosts] = useState([])
-
-  // useEffect(() => {
-  //   localStorage.setItem("likedPosts", JSON.stringify(likedPosts))
-  // }, [likedPosts])
+  const reportReasons = [
+    "Spam",
+    "Inappropriate",
+    "Misinformation",
+    "Fraud",
+    "Offensive Language"
+  ]
 
   // fetch posts
   useEffect(() => {
+
     const token = localStorage.getItem("UserToken")
 
     axios.get("http://localhost:5000/post/getpost", {
       headers: { "auth-token": token }
     })
       .then(res => setPosts(res.data.allposts))
+
   }, [])
 
   // fetch categories
   useEffect(() => {
+
     axios.get("http://localhost:5000/category/getcategory")
       .then(res => setCategories(res.data.allcategory))
+
   }, [])
 
   // filter posts
@@ -64,15 +465,10 @@ export default function HomeFeed() {
       : posts.filter(p => p.categoryId?._id === selectedCategory)
 
   // ❤️ like
-  // const handleLike = (id) => {
-  //   if (likedPosts.includes(id)) {
-  //     setLikedPosts(likedPosts.filter(pid => pid !== id))
-  //   } else {
-  //     setLikedPosts([...likedPosts, id])
-  //   }
-  // }
   const handleLike = async (id) => {
+
     try {
+
       const token = localStorage.getItem("UserToken")
 
       await axios.post(
@@ -97,21 +493,28 @@ export default function HomeFeed() {
       setPosts(res.data.allposts)
 
     } catch (error) {
+
       alert("Unable to like post")
+
     }
   }
+
   // 🚩 open dialog
   const handleOpenReport = (id) => {
+
     setSelectedPostId(id)
     setOpenReport(true)
+
   }
 
-
-
+  // 🚩 submit report
   const handleSubmitReport = () => {
+
     if (!reason) {
+
       alert("Please select a reason")
       return
+
     }
 
     const token = localStorage.getItem("UserToken")
@@ -125,72 +528,199 @@ export default function HomeFeed() {
         }
       }
     )
-      .then((res) => {
+
+      .then(() => {
+
         alert("Post reported successfully")
+
         setOpenReport(false)
         setReason("")
+
       })
-      // .catch((error) => {
 
-      //   if (error.response?.status === 400) {
-      //     alert("You already reported this post")
-      //   }
-
-      // })
       .catch((error) => {
+
         if (error.response?.status === 400) {
+
           alert("You already reported this post")
+
         } else {
+
           alert("Something went wrong")
+
         }
+
       })
   }
 
   return (
-    <Box sx={{ padding: "20px", background: "#f4f6f9", minHeight: "100vh" }}>
+
+    <Box
+
+      sx={{
+
+        px: { xs: 2, md: 3 },
+
+        py: 3,
+
+        minHeight: "100vh",
+
+        background: `
+          radial-gradient(circle at top left, rgba(59,130,246,0.16), transparent 25%),
+          radial-gradient(circle at top right, rgba(139,92,246,0.14), transparent 25%),
+          radial-gradient(circle at bottom left, rgba(34,211,238,0.10), transparent 20%),
+          linear-gradient(180deg, #0f172a 0%, #020617 100%)
+        `,
+
+        position: "relative",
+
+        overflow: "hidden",
+      }}
+    >
 
       {/* FILTER */}
-      <Box sx={{ maxWidth: "250px", marginBottom: "20px" }}>
+
+      <Box
+
+        sx={{
+
+          maxWidth: "260px",
+
+          mb: 4,
+
+          background: "rgba(255,255,255,0.05)",
+
+          backdropFilter: "blur(16px)",
+
+          border: "1px solid rgba(255,255,255,0.06)",
+
+          borderRadius: "18px",
+
+          p: 0.6,
+
+          boxShadow: `
+            0 10px 30px rgba(0,0,0,0.25),
+            inset 0 1px 0 rgba(255,255,255,0.04)
+          `,
+        }}
+      >
+
         <FormControl fullWidth size="small">
+
           <Select
+
             value={selectedCategory}
+
             onChange={(e) => setSelectedCategory(e.target.value)}
+
+            sx={{
+
+              color: "#f8fafc",
+
+              borderRadius: "14px",
+
+              '.MuiOutlinedInput-notchedOutline': {
+                border: "none"
+              },
+
+              '& .MuiSvgIcon-root': {
+                color: "#cbd5e1"
+              },
+            }}
           >
+
             <MenuItem value="All">All Categories</MenuItem>
+
             {categories.map(cat => (
-              <MenuItem key={cat._id} value={cat._id}>
+
+              <MenuItem
+                key={cat._id}
+                value={cat._id}
+              >
                 {cat.category_name}
               </MenuItem>
+
             ))}
+
           </Select>
+
         </FormControl>
+
       </Box>
 
-      {/* EMPTY STATE OR POSTS */}
+      {/* POSTS */}
+
       {filteredPosts.length === 0 ? (
 
         <Box
+
           sx={{
             textAlign: "center",
-            marginTop: "80px",
-            width: "100%"
+            mt: 10
           }}
         >
 
-          <Typography variant="h6" sx={{ mb: 2 }}>
+          <Typography
+
+            variant="h5"
+
+            sx={{
+              color: "#fff",
+              fontWeight: 700
+            }}
+          >
             No posts created yet 😕
           </Typography>
 
-          <Typography variant="body2" sx={{ mb: 3, color: "gray" }}>
+          <Typography
+
+            sx={{
+              mt: 1,
+              color: "#94a3b8"
+            }}
+          >
             Start sharing your ideas by creating your first post
           </Typography>
 
           <Button
+
             variant="contained"
+
             onClick={() => window.location.href = "/addpost"}
+
             sx={{
-              backgroundColor: "#1e40af",
-              textTransform: "none"
+
+              mt: 3,
+
+              px: 4,
+              py: 1.2,
+
+              borderRadius: "999px",
+
+              textTransform: "none",
+
+              fontWeight: 700,
+
+              background: `
+                linear-gradient(
+                  135deg,
+                  #3b82f6,
+                  #8b5cf6
+                )
+              `,
+
+              boxShadow: '0 10px 25px rgba(59,130,246,0.35)',
+
+              '&:hover': {
+
+                background: `
+                  linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #7c3aed
+                  )
+                `,
+              }
             }}
           >
             Create Post
@@ -201,90 +731,152 @@ export default function HomeFeed() {
       ) : (
 
         <Box
+
           sx={{
+
             display: "grid",
+
             gridTemplateColumns: {
               xs: "1fr",
               sm: "repeat(2, 1fr)",
               md: "repeat(3, 1fr)",
               lg: "repeat(4, 1fr)"
             },
-            gap: "16px"
+
+            gap: "22px"
           }}
         >
 
           {filteredPosts.map(post => (
 
             <Card
+
               key={post._id}
+
               sx={{
-                borderRadius: "12px",
+
+                borderRadius: "24px",
+
                 display: "flex",
                 flexDirection: "column",
-                height: "100%",
-                boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
-                "&:hover": {
-                  transform: "translateY(-4px)"
+
+                overflow: "hidden",
+
+                background: `
+                  linear-gradient(
+                    180deg,
+                    rgba(15,23,42,0.88),
+                    rgba(17,24,39,0.92)
+                  )
+                `,
+
+                backdropFilter: "blur(16px)",
+
+                border: "1px solid rgba(255,255,255,0.06)",
+
+                boxShadow: `
+                  0 12px 35px rgba(0,0,0,0.28),
+                  inset 0 1px 0 rgba(255,255,255,0.04)
+                `,
+
+                transition: "all 0.28s ease",
+
+                '&:hover': {
+
+                  transform: "translateY(-8px)",
+
+                  border: "1px solid rgba(96,165,250,0.25)",
+
+                  boxShadow: `
+                    0 20px 40px rgba(59,130,246,0.18)
+                  `,
                 }
               }}
             >
 
               {/* IMAGE */}
-              {/* {post.postimage && (
-                <CardMedia
-                  component="img"
-                  image={`http://localhost:5000/image/${post.postimage}`}
-                  sx={{ height: "160px", objectFit: "cover" }}
-                />
-              )} */}
+
               {post.postimage && (
+
                 <Box sx={{ position: "relative" }}>
 
                   <CardMedia
+
                     component="img"
+
                     image={`http://localhost:5000/image/${post.postimage}`}
+
                     sx={{
-                      height: "160px",
-                      objectFit: "cover"
+
+                      height: "190px",
+
+                      objectFit: "cover",
                     }}
                   />
 
+                  {/* USER BADGE */}
+
                   <Box
+
                     sx={{
+
                       position: "absolute",
-                      top: 10,
-                      left: 10,
+
+                      top: 12,
+                      left: 12,
+
                       display: "flex",
                       alignItems: "center",
+
                       gap: 1,
-                      px: 1.2,
-                      py: 0.5,
-                      borderRadius: "20px",
+
+                      px: 1.3,
+                      py: 0.6,
+
+                      borderRadius: "999px",
+
                       background: "rgba(0,0,0,0.45)",
-                      backdropFilter: "blur(6px)",
-                      boxShadow: "0 2px 8px rgba(0,0,0,0.25)",
-                      color: "#fff"
+
+                      backdropFilter: "blur(12px)",
+
+                      border: "1px solid rgba(255,255,255,0.08)",
+
+                      color: "#fff",
                     }}
                   >
 
-
                     <Box
+
                       sx={{
-                        width: 24,
-                        height: 24,
+
+                        width: 26,
+                        height: 26,
+
                         borderRadius: "50%",
-                        background: "#5c6bc0",
+
+                        background: `
+                          linear-gradient(
+                            135deg,
+                            #3b82f6,
+                            #8b5cf6
+                          )
+                        `,
+
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
+
                         fontSize: "12px",
                         fontWeight: 700
                       }}
                     >
+
                       {post.userId?.name?.charAt(0).toUpperCase()}
+
                     </Box>
 
                     <Typography
+
                       sx={{
                         fontSize: "13px",
                         fontWeight: 600
@@ -299,58 +891,204 @@ export default function HomeFeed() {
               )}
 
               {/* CONTENT */}
-              <CardContent sx={{ flexGrow: 1 }}>
 
+              <CardContent
 
-                <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+                sx={{
+                  flexGrow: 1,
+                  p: 2.2
+                }}
+              >
+
+                <Typography
+
+                  variant="subtitle1"
+
+                  sx={{
+                    fontWeight: 700,
+                    color: "#f8fafc",
+                    mb: 1
+                  }}
+                >
                   {post.title}
                 </Typography>
 
                 <Typography
+
                   variant="body2"
+
                   sx={{
-                    fontSize: "12px",
+
+                    fontSize: "13px",
+
+                    color: "#cbd5e1",
+
+                    lineHeight: 1.8,
+
                     display: "-webkit-box",
+
                     WebkitLineClamp: 3,
+
                     WebkitBoxOrient: "vertical",
+
                     overflow: "hidden"
                   }}
                 >
                   {post.description}
                 </Typography>
 
-                <Typography sx={{ fontSize: "11px", color: "#1e40af", mt: 1 }}>
+                <Typography
+
+                  sx={{
+
+                    fontSize: "12px",
+
+                    color: "#60a5fa",
+
+                    mt: 2,
+
+                    fontWeight: 600
+                  }}
+                >
                   #{post.categoryId?.category_name}
                 </Typography>
 
               </CardContent>
 
               {/* ACTIONS */}
-              <CardActions sx={{ justifyContent: "space-between" }}>
 
-                {/* <IconButton onClick={() => handleLike(post._id)}>
-                  <FavoriteIcon
-                   color={post.likedBy?.includes(localStorage.getItem("userid")) ? "error" : "disabled"}
-                  />
-                </IconButton> */}
-                <IconButton onClick={() => handleLike(post._id)}>
-                  <FavoriteIcon
-                    color={
-                      post.likedBy?.some(
-                        (id) => id.toString() === localStorage.getItem("userid")
-                      )
-                        ? "error"
-                        : "disabled"
+              <CardActions
+
+                sx={{
+
+                  justifyContent: "space-between",
+
+                  alignItems: "center",
+
+                  px: 2,
+                  pb: 2,
+                  pt: 1.2,
+
+                  mt: "auto",
+
+                  borderTop: "1px solid rgba(255,255,255,0.05)",
+
+                  background: `
+                    linear-gradient(
+                      180deg,
+                      rgba(255,255,255,0.01),
+                      rgba(255,255,255,0.03)
+                    )
+                  `,
+                }}
+              >
+
+                {/* LIKE */}
+
+                <IconButton
+
+                  onClick={() => handleLike(post._id)}
+
+                  sx={{
+
+                    display: "flex",
+
+                    alignItems: "center",
+
+                    gap: 0.7,
+
+                    px: 1.3,
+                    py: 0.8,
+
+                    borderRadius: "14px",
+
+                    background: "rgba(255,255,255,0.04)",
+
+                    border: "1px solid rgba(255,255,255,0.05)",
+
+                    transition: "all 0.22s ease",
+
+                    '&:hover': {
+
+                      background: "rgba(255,255,255,0.08)",
+
+                      transform: "translateY(-2px)",
+
+                      boxShadow: "0 8px 18px rgba(0,0,0,0.18)",
                     }
+                  }}
+                >
+
+                  <FavoriteIcon
+
+                    sx={{
+
+                      fontSize: 22,
+
+                      color:
+                        post.likedBy?.some(
+                          (id) => id.toString() === localStorage.getItem("userid")
+                        )
+                          ? "#ef4444"
+                          : "#94a3b8",
+
+                      transition: "0.2s ease",
+                    }}
                   />
 
-                  <Typography sx={{ fontSize: "12px", ml: 0.5 }}>
+                  <Typography
+
+                    sx={{
+                      fontSize: "13px",
+
+                      fontWeight: 700,
+
+                      color: "#cbd5e1"
+                    }}
+                  >
                     {post.likesCount}
                   </Typography>
+
                 </IconButton>
 
-                <IconButton onClick={() => handleOpenReport(post._id)}>
-                  <FlagIcon color="warning" />
+                {/* REPORT */}
+
+                <IconButton
+
+                  onClick={() => handleOpenReport(post._id)}
+
+                  sx={{
+
+                    px: 1.1,
+                    py: 0.8,
+
+                    borderRadius: "14px",
+
+                    background: "rgba(255,255,255,0.04)",
+
+                    border: "1px solid rgba(255,255,255,0.05)",
+
+                    transition: "all 0.22s ease",
+
+                    '&:hover': {
+
+                      background: "rgba(255,255,255,0.08)",
+
+                      transform: "translateY(-2px)",
+
+                      boxShadow: "0 8px 18px rgba(0,0,0,0.18)",
+                    }
+                  }}
+                >
+
+                  <FlagRoundedIcon
+
+                    sx={{
+                      color: "#fbbf24",
+                      fontSize: 21
+                    }}
+                  />
+
                 </IconButton>
 
               </CardActions>
@@ -364,30 +1102,114 @@ export default function HomeFeed() {
       )}
 
       {/* REPORT DIALOG */}
-      <Dialog open={openReport} onClose={() => setOpenReport(false)}>
 
-        <DialogTitle>Why are you reporting this post?</DialogTitle>
+      <Dialog
+
+        open={openReport}
+
+        onClose={() => setOpenReport(false)}
+
+        PaperProps={{
+
+          sx: {
+
+            borderRadius: "22px",
+
+            background: "#0f172a",
+
+            color: "#fff",
+
+            border: "1px solid rgba(255,255,255,0.08)",
+
+            minWidth: "340px"
+          }
+        }}
+      >
+
+        <DialogTitle sx={{ fontWeight: 700 }}>
+          Why are you reporting this post?
+        </DialogTitle>
 
         <DialogContent>
 
           <select
+
             value={reason}
+
             onChange={(e) => setReason(e.target.value)}
-            style={{ width: "100%", padding: "10px", marginTop: "10px" }}
+
+            style={{
+
+              width: "100%",
+
+              padding: "12px",
+
+              marginTop: "10px",
+
+              borderRadius: "12px",
+
+              background: "#111827",
+
+              color: "#fff",
+
+              border: "1px solid rgba(255,255,255,0.08)",
+
+              outline: "none"
+            }}
           >
+
             <option value="">Select reason</option>
+
             {reportReasons.map((r, i) => (
-              <option key={i} value={r}>{r}</option>
+
+              <option key={i} value={r}>
+                {r}
+              </option>
+
             ))}
+
           </select>
 
         </DialogContent>
 
-        <DialogActions>
-          <Button onClick={() => setOpenReport(false)}>Cancel</Button>
-          <Button variant="contained" onClick={handleSubmitReport}>
+        <DialogActions sx={{ p: 2 }}>
+
+          <Button
+
+            onClick={() => setOpenReport(false)}
+
+            sx={{
+              color: "#cbd5e1",
+              textTransform: "none"
+            }}
+          >
+            Cancel
+          </Button>
+
+          <Button
+
+            variant="contained"
+
+            onClick={handleSubmitReport}
+
+            sx={{
+
+              textTransform: "none",
+
+              borderRadius: "10px",
+
+              background: `
+                linear-gradient(
+                  135deg,
+                  #3b82f6,
+                  #8b5cf6
+                )
+              `,
+            }}
+          >
             Submit
           </Button>
+
         </DialogActions>
 
       </Dialog>

@@ -182,6 +182,8 @@
 //   );
 // }
 // export default TopBar;
+
+
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -195,283 +197,829 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
+
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
-import HomeIcon from '@mui/icons-material/Home';
-import AddBoxIcon from '@mui/icons-material/AddBox';
-import ArticleIcon from '@mui/icons-material/Article';
-import InfoIcon from '@mui/icons-material/Info';
-import HelpIcon from '@mui/icons-material/Help';
-import LogoutIcon from '@mui/icons-material/Logout';
-import PersonIcon from '@mui/icons-material/Person';
+import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
+import AddBoxRoundedIcon from '@mui/icons-material/AddBoxRounded';
+import ArticleRoundedIcon from '@mui/icons-material/ArticleRounded';
+import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
+import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
+import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
+import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
+
 import { useNavigate } from "react-router-dom";
 
 const pages = [
-  { name: "Home Feed",  path: "/HomeFeed", icon: <HomeIcon   sx={{ fontSize: 16 }} /> },
-  { name: "Create Post",path: "/Addpost",  icon: <AddBoxIcon sx={{ fontSize: 16 }} /> },
-  { name: "My Posts",   path: "/MyPosts",  icon: <ArticleIcon sx={{ fontSize: 16 }} /> },
-  { name: "About Us",   path: "/UAbout",  icon: <InfoIcon   sx={{ fontSize: 16 }} /> },
-  { name: "FAQ",        path: "/Faq",     icon: <HelpIcon   sx={{ fontSize: 16 }} /> },
+  { name: "Home Feed", path: "/HomeFeed", icon: <HomeRoundedIcon sx={{ fontSize: 18 }} /> },
+  { name: "Create Post", path: "/Addpost", icon: <AddBoxRoundedIcon sx={{ fontSize: 18 }} /> },
+  { name: "My Posts", path: "/MyPosts", icon: <ArticleRoundedIcon sx={{ fontSize: 18 }} /> },
+  { name: "About Us", path: "/UAbout", icon: <InfoRoundedIcon sx={{ fontSize: 18 }} /> },
+  { name: "FAQ", path: "/Faq", icon: <HelpRoundedIcon sx={{ fontSize: 18 }} /> },
 ];
 
-const token    = localStorage.getItem("UserToken");
+const token = localStorage.getItem("UserToken");
 const settings = token ? ['Profile', 'Logout'] : ['Login'];
 
- function TopBar() {
+function TopBar() {
+
   const name = localStorage.getItem("name");
   const navigate = useNavigate();
-  const [anchorElNav,  setAnchorElNav]  = React.useState(null);
+
+  const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
-  const handleOpenNavMenu  = (e) => setAnchorElNav(e.currentTarget);
-  const handleOpenUserMenu = (e) => setAnchorElUser(e.currentTarget);
-  const handleCloseNavMenu  = () => setAnchorElNav(null);
-  const handleCloseUserMenu = () => setAnchorElUser(null);
+  const handleOpenNavMenu = (event) => {
+    setAnchorElNav(event.currentTarget);
+  };
+
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
 
   const handlesettings = (set) => {
+
     if (set === 'Logout') {
+
       alert("are you sure want to logout?");
+
       localStorage.removeItem('UserToken');
       localStorage.removeItem('name');
+
       navigate("/Login");
-    } else if (set === 'Profile') {
+
+    }
+    else if (set === 'Profile') {
+
       navigate("/MyProfile");
+
+    }
+    else if (set === 'Login') {
+
+      navigate("/Login");
+
     }
   };
 
-  /* ─── shared dropdown paper style ─── */
   const dropPaper = {
-    background: '#0d1525',
-    border: '1px solid #1e3a5f',
-    borderRadius: '14px',
-    minWidth: 210,
-    boxShadow: '0 24px 60px rgba(0,0,0,0.7)',
-    p: 0.5,
+    background: 'rgba(10, 15, 30, 0.95)',
+    backdropFilter: 'blur(20px)',
+    border: '1px solid rgba(255,255,255,0.08)',
+    borderRadius: '20px',
+    overflow: 'hidden',
+    mt: 1.5,
+
+    boxShadow: `
+      0 20px 60px rgba(0,0,0,0.45),
+      inset 0 1px 0 rgba(255,255,255,0.05)
+    `,
   };
 
   return (
+
     <AppBar
       position="sticky"
       elevation={0}
+
       sx={{
-        /* Solid blue-navy — clearly different from the #020617 page bg */
-        background: '#0a1628',
-        borderBottom: '1px solid #1e3a5f',
-        boxShadow: '0 1px 0 #1e3a5f, 0 8px 32px rgba(0,0,0,0.5)',
+
+        background: 'rgba(2, 6, 23, 0.72)',
+
+        backdropFilter: 'blur(22px)',
+        WebkitBackdropFilter: 'blur(22px)',
+
+        borderBottom: '1px solid rgba(255,255,255,0.06)',
+
+        overflow: "hidden",
+
+        '&::before': {
+
+          content: '""',
+
+          position: 'absolute',
+
+          width: '400px',
+          height: '400px',
+
+          background: 'radial-gradient(circle, rgba(59,130,246,0.18) 0%, transparent 70%)',
+
+          top: '-260px',
+          left: '-100px',
+
+          pointerEvents: 'none',
+        },
+
+        '&::after': {
+
+          content: '""',
+
+          position: 'absolute',
+
+          width: '300px',
+          height: '300px',
+
+          background: 'radial-gradient(circle, rgba(139,92,246,0.14) 0%, transparent 70%)',
+
+          top: '-220px',
+          right: '-80px',
+
+          pointerEvents: 'none',
+        },
+
+        boxShadow: `
+          0 8px 40px rgba(0,0,0,0.35),
+          inset 0 -1px 0 rgba(255,255,255,0.03)
+        `,
       }}
     >
-      <Container maxWidth="xl">
-        <Toolbar disableGutters sx={{ minHeight: '72px' }}>
 
-          {/* ══ LOGO — desktop ══ */}
+      <Container maxWidth="xl">
+
+        <Toolbar
+          disableGutters
+
+          sx={{
+            minHeight: "92px",
+            py: 1,
+            position: "relative",
+            zIndex: 5,
+          }}
+        >
+
+          {/* DESKTOP LOGO */}
+
           <Box
+
             onClick={() => navigate("/")}
+
             sx={{
               display: { xs: 'none', md: 'flex' },
-              alignItems: 'center', gap: 1.4,
-              cursor: 'pointer', mr: 5, flexShrink: 0,
+
+              alignItems: 'center',
+
+              gap: 1.8,
+
+              cursor: 'pointer',
+
+              mr: 5,
             }}
           >
-            {/* Shield badge */}
-            <Box sx={{
-              width: 42, height: 42, borderRadius: '11px',
-              background: 'linear-gradient(145deg,#1d4ed8,#2563eb)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              boxShadow: '0 0 0 1px #3b82f644, 0 4px 14px #2563eb55',
-            }}>
-              <VerifiedUserIcon sx={{ color: '#fff', fontSize: 22 }} />
+
+            <Box
+
+              sx={{
+
+                width: 48,
+                height: 48,
+
+                borderRadius: '16px',
+
+                background: `
+                  linear-gradient(
+                    135deg,
+                    #2563eb 0%,
+                    #3b82f6 40%,
+                    #8b5cf6 100%
+                  )
+                `,
+
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+
+                position: 'relative',
+
+                boxShadow: `
+                  0 10px 30px rgba(59,130,246,0.4),
+                  inset 0 1px 0 rgba(255,255,255,0.2)
+                `,
+
+                '&::before': {
+
+                  content: '""',
+
+                  position: 'absolute',
+
+                  inset: '-1px',
+
+                  borderRadius: '16px',
+
+                  padding: '1px',
+
+                  background: `
+                    linear-gradient(
+                      135deg,
+                      rgba(255,255,255,0.45),
+                      rgba(255,255,255,0)
+                    )
+                  `,
+
+                  WebkitMask:
+                    'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+
+                  WebkitMaskComposite: 'xor',
+                  maskComposite: 'exclude',
+                }
+              }}
+            >
+
+              <VerifiedUserIcon
+                sx={{
+                  color: "#fff",
+                  fontSize: 24
+                }}
+              />
+
             </Box>
 
             <Box>
-              <Typography sx={{
-                fontWeight: 800, fontSize: '18px',
-                color: '#f0f8ff', letterSpacing: '-0.025em', lineHeight: 1.1,
-              }}>
-                Clean<Box component="span" sx={{ color: '#3b82f6' }}>Feed</Box>
+
+              <Typography
+
+                sx={{
+                  fontWeight: 900,
+                  fontSize: '30px',
+                  color: '#ffffff',
+                  lineHeight: 1,
+                  letterSpacing: '-0.05em'
+                }}
+              >
+
+                Clean
+
+                <Box
+                  component="span"
+
+                  sx={{
+
+                    background: `
+                      linear-gradient(
+                        135deg,
+                        #60a5fa,
+                        #8b5cf6
+                      )
+                    `,
+
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                  }}
+                >
+                  Feed
+                </Box>
+
               </Typography>
-              <Typography sx={{
-                fontSize: '9px', letterSpacing: '0.18em',
-                textTransform: 'uppercase', color: '#3b82f6',
-                opacity: 0.7, lineHeight: 1, mt: '3px',
-              }}>
-                Safe · Social · Trusted
+
+              <Typography
+
+                sx={{
+                  mt: "4px",
+
+                  fontSize: '9px',
+
+                  color: '#94a3b8',
+
+                  letterSpacing: '0.28em',
+
+                  textTransform: 'uppercase'
+                }}
+              >
+                Safe • Modern • Trusted
               </Typography>
+
             </Box>
+
           </Box>
 
-          {/* ══ Hamburger — mobile ══ */}
+          {/* MOBILE MENU */}
+
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-            <IconButton onClick={handleOpenNavMenu} sx={{ color: '#93c5fd' }}>
-              <MenuIcon sx={{ fontSize: 26 }} />
+
+            <IconButton
+
+              onClick={handleOpenNavMenu}
+
+              sx={{
+
+                color: '#e2e8f0',
+
+                background: 'rgba(255,255,255,0.04)',
+
+                border: '1px solid rgba(255,255,255,0.06)',
+
+                '&:hover': {
+
+                  background: 'rgba(255,255,255,0.08)',
+                }
+              }}
+            >
+              <MenuIcon />
             </IconButton>
+
             <Menu
               anchorEl={anchorElNav}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
-              anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-              transformOrigin={{ vertical: 'top', horizontal: 'left' }}
-              PaperProps={{ sx: { ...dropPaper, mt: 1.5 } }}
+
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+              }}
+
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+
+              PaperProps={{
+                sx: dropPaper
+              }}
             >
+
               {pages.map((page) => (
-                <MenuItem key={page.name}
-                  onClick={() => { navigate(page.path); handleCloseNavMenu(); }}
+
+                <MenuItem
+
+                  key={page.name}
+
+                  onClick={() => {
+
+                    navigate(page.path);
+                    handleCloseNavMenu();
+
+                  }}
+
                   sx={{
-                    color: '#93c5fd', fontSize: '14px',
-                    borderRadius: '8px', gap: 1.5, my: 0.2,
-                    '&:hover': { background: '#1e3a5f55', color: '#fff' },
+
+                    color: '#cbd5e1',
+
+                    gap: 1.5,
+
+                    borderRadius: '12px',
+
+                    mx: 1,
+                    my: 0.5,
+
+                    transition: '0.2s',
+
+                    '&:hover': {
+
+                      background: 'rgba(255,255,255,0.06)',
+
+                      color: '#fff',
+
+                      transform: 'translateX(4px)',
+                    }
                   }}
                 >
-                  <Box sx={{ color: '#3b82f6', display: 'flex' }}>{page.icon}</Box>
+
+                  {page.icon}
+
                   {page.name}
+
                 </MenuItem>
               ))}
+
             </Menu>
+
           </Box>
 
-          {/* ══ Logo — mobile ══ */}
-          <Box onClick={() => navigate("/")}
-            sx={{ display: { xs: 'flex', md: 'none' }, flexGrow: 1, alignItems: 'center', gap: 1.2, cursor: 'pointer' }}
+          {/* MOBILE LOGO */}
+
+          <Box
+
+            onClick={() => navigate("/")}
+
+            sx={{
+              display: { xs: 'flex', md: 'none' },
+
+              alignItems: 'center',
+
+              gap: 1.2,
+
+              flexGrow: 1,
+
+              ml: 1,
+
+              cursor: 'pointer'
+            }}
           >
-            <Box sx={{
-              width: 32, height: 32, borderRadius: '8px',
-              background: 'linear-gradient(145deg,#1d4ed8,#2563eb)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-            }}>
-              <VerifiedUserIcon sx={{ color: '#fff', fontSize: 17 }} />
-            </Box>
-            <Typography sx={{ fontWeight: 800, fontSize: '16px', color: '#f0f8ff', letterSpacing: '-0.02em' }}>
-              Clean<Box component="span" sx={{ color: '#3b82f6' }}>Feed</Box>
-            </Typography>
-          </Box>
 
-          {/* ══ Nav links — desktop ══ */}
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: 0.5 }}>
-            {pages.map((page) => (
-              <Button
-                key={page.name}
-                onClick={() => navigate(page.path)}
-                startIcon={page.icon}
+            <Box
+
+              sx={{
+
+                width: 38,
+                height: 38,
+
+                borderRadius: '13px',
+
+                background: 'linear-gradient(135deg,#3b82f6,#8b5cf6)',
+
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+
+                boxShadow: '0 8px 24px rgba(59,130,246,0.35)',
+              }}
+            >
+
+              <VerifiedUserIcon
                 sx={{
-                  px: 2, py: 1,
-                  color: '#93c5fd',
-                  fontWeight: 500,
-                  fontSize: '13.5px',
-                  textTransform: 'none',
-                  borderRadius: '9px',
-                  letterSpacing: '0.01em',
-                  transition: 'all 0.18s',
-                  '& .MuiButton-startIcon': { mr: 0.6, opacity: 0.7 },
-                  '&:hover': {
-                    color: '#fff',
-                    background: '#1e3a5f55',
-                    '& .MuiButton-startIcon': { opacity: 1 },
-                  },
+                  color: "#fff",
+                  fontSize: 18
+                }}
+              />
+
+            </Box>
+
+            <Typography
+
+              sx={{
+                fontWeight: 800,
+                color: '#fff',
+                fontSize: '21px'
+              }}
+            >
+              Clean
+
+              <Box
+                component="span"
+
+                sx={{
+                  color: '#60a5fa'
                 }}
               >
-                {page.name}
-              </Button>
-            ))}
+                Feed
+              </Box>
+
+            </Typography>
+
           </Box>
 
-          {/* ══ Right side ══ */}
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+          {/* NAV LINKS */}
 
-            {/* Online name pill */}
+          <Box
+
+            sx={{
+              flexGrow: 1,
+
+              display: { xs: 'none', md: 'flex' },
+
+              alignItems: 'center',
+
+              gap: 1
+            }}
+          >
+
+            {pages.map((page) => (
+
+              <Button
+
+                key={page.name}
+
+                onClick={() => navigate(page.path)}
+
+                startIcon={page.icon}
+
+                sx={{
+
+                  px: 2.2,
+                  py: 1.1,
+
+                  borderRadius: '14px',
+
+                  color: '#cbd5e1',
+
+                  textTransform: 'none',
+
+                  fontWeight: 600,
+
+                  fontSize: '14px',
+
+                  position: 'relative',
+
+                  overflow: 'hidden',
+
+                  transition: 'all 0.25s ease',
+
+                  '&::before': {
+
+                    content: '""',
+
+                    position: 'absolute',
+
+                    inset: 0,
+
+                    background: `
+                      linear-gradient(
+                        135deg,
+                        rgba(59,130,246,0.16),
+                        rgba(139,92,246,0.12)
+                      )
+                    `,
+
+                    opacity: 0,
+
+                    transition: '0.25s',
+                  },
+
+                  '&:hover': {
+
+                    color: '#fff',
+
+                    transform: 'translateY(-2px)',
+
+                    border: '1px solid rgba(255,255,255,0.06)',
+
+                    boxShadow: '0 10px 25px rgba(59,130,246,0.12)',
+
+                    '&::before': {
+                      opacity: 1
+                    }
+                  },
+
+                  '& .MuiButton-startIcon': {
+
+                    position: 'relative',
+                    zIndex: 2,
+                  }
+                }}
+              >
+
+                <Box sx={{ position: 'relative', zIndex: 2 }}>
+                  {page.name}
+                </Box>
+
+              </Button>
+            ))}
+
+          </Box>
+
+          {/* RIGHT SIDE */}
+
+          <Box
+
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1.5
+            }}
+          >
+
             {name && (
-              <Box sx={{
-                display: { xs: 'none', md: 'flex' },
-                alignItems: 'center', gap: 0.9,
-                px: 1.6, py: 0.7,
-                background: '#0d1e35',
-                border: '1px solid #1e3a5f',
-                borderRadius: '999px',
-              }}>
-                <Box sx={{ width: 7, height: 7, borderRadius: '50%', background: '#22d3ee', flexShrink: 0 }} />
-                <Typography sx={{ fontSize: '13px', color: '#93c5fd', fontWeight: 600 }}>
+
+              <Box
+
+                sx={{
+
+                  display: { xs: 'none', md: 'flex' },
+
+                  alignItems: 'center',
+
+                  gap: 1,
+
+                  px: 1.7,
+                  py: 0.8,
+
+                  borderRadius: '999px',
+
+                  background: 'rgba(255,255,255,0.04)',
+
+                  border: '1px solid rgba(255,255,255,0.06)',
+
+                  backdropFilter: 'blur(12px)',
+                }}
+              >
+
+                <Box
+
+                  sx={{
+                    width: 8,
+                    height: 8,
+                    borderRadius: '50%',
+
+                    background: '#22d3ee',
+
+                    boxShadow: '0 0 12px #22d3ee'
+                  }}
+                />
+
+                <Typography
+
+                  sx={{
+                    color: '#e2e8f0',
+                    fontWeight: 600,
+                    fontSize: '13px'
+                  }}
+                >
                   {name}
                 </Typography>
+
               </Box>
             )}
 
-            {/* Avatar */}
+            {/* AVATAR */}
+
             <Tooltip title="Account">
+
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar sx={{
-                  width: 40, height: 40,
-                  fontWeight: 900,
-                  fontSize: '16px',
-                  color: '#fff',
-                  background: 'linear-gradient(145deg,#1d4ed8,#3b82f6)',
-                  border: '2px solid #1e3a5f',
-                  boxShadow: '0 0 0 3px #3b82f622',
-                }}>
-                  {name?.charAt(0).toUpperCase() || 'U'}
+
+                <Avatar
+
+                  sx={{
+
+                    width: 44,
+                    height: 44,
+
+                    background: `
+                      linear-gradient(
+                        135deg,
+                        #3b82f6,
+                        #8b5cf6
+                      )
+                    `,
+
+                    fontWeight: 800,
+
+                    border: '2px solid rgba(255,255,255,0.08)',
+
+                    boxShadow: `
+                      0 10px 25px rgba(59,130,246,0.35)
+                    `,
+
+                    transition: '0.25s',
+
+                    '&:hover': {
+
+                      transform: 'scale(1.05)',
+                    }
+                  }}
+                >
+
+                  {name?.charAt(0).toUpperCase() || "U"}
+
                 </Avatar>
+
               </IconButton>
+
             </Tooltip>
 
-            {/* User dropdown */}
+            {/* USER MENU */}
+
             <Menu
-              sx={{ mt: '52px' }}
+
+              sx={{ mt: '55px' }}
+
               anchorEl={anchorElUser}
-              anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-              keepMounted
-              transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+
               open={Boolean(anchorElUser)}
+
               onClose={handleCloseUserMenu}
-              PaperProps={{ sx: dropPaper }}
+
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+
+              PaperProps={{
+                sx: dropPaper
+              }}
             >
+
               {name && (
-                <Box sx={{
-                  px: 2, py: 1.5, mb: 0.5,
-                  borderBottom: '1px solid #1e3a5f',
-                  display: 'flex', alignItems: 'center', gap: 1.5,
-                }}>
-                  <Avatar sx={{
-                    width: 36, height: 36, fontWeight: 900, fontSize: 14,
-                    color: '#fff',
-                    background: 'linear-gradient(145deg,#1d4ed8,#3b82f6)',
-                    border: '2px solid #1e3a5f',
-                  }}>
+
+                <Box
+
+                  sx={{
+                    px: 2,
+                    py: 2,
+
+                    borderBottom: '1px solid rgba(255,255,255,0.06)',
+
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 1.5
+                  }}
+                >
+
+                  <Avatar
+
+                    sx={{
+
+                      width: 40,
+                      height: 40,
+
+                      background: 'linear-gradient(135deg,#3b82f6,#8b5cf6)',
+
+                      fontWeight: 800
+                    }}
+                  >
+
                     {name.charAt(0).toUpperCase()}
+
                   </Avatar>
+
                   <Box>
-                    <Typography sx={{ fontSize: '14px', fontWeight: 700, color: '#f0f8ff', lineHeight: 1.2 }}>
+
+                    <Typography
+
+                      sx={{
+                        color: '#fff',
+                        fontWeight: 700,
+                        fontSize: '14px'
+                      }}
+                    >
                       {name}
                     </Typography>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mt: '3px' }}>
-                      <Box sx={{ width: 6, height: 6, borderRadius: '50%', background: '#22d3ee' }} />
-                      <Typography sx={{ fontSize: '11px', color: '#4a6fa5' }}>Online</Typography>
-                    </Box>
+
+                    <Typography
+
+                      sx={{
+                        color: '#94a3b8',
+                        fontSize: '12px'
+                      }}
+                    >
+                      Active User
+                    </Typography>
+
                   </Box>
+
                 </Box>
               )}
 
               {settings.map((setting) => (
-                <MenuItem key={setting}
-                  onClick={() => { handlesettings(setting); handleCloseUserMenu(); }}
+
+                <MenuItem
+
+                  key={setting}
+
+                  onClick={() => {
+
+                    handlesettings(setting);
+                    handleCloseUserMenu();
+
+                  }}
+
                   sx={{
-                    color: setting === 'Logout' ? '#f87171' : '#93c5fd',
-                    fontSize: '13.5px',
-                    borderRadius: '8px', gap: 1.5,
-                    mx: 0.3, my: 0.2,
+
+                    mx: 1,
+                    my: 0.5,
+
+                    borderRadius: '12px',
+
+                    color: setting === "Logout"
+                      ? '#fca5a5'
+                      : '#cbd5e1',
+
+                    gap: 1.5,
+
+                    transition: '0.2s',
+
                     '&:hover': {
-                      background: '#1e3a5f55',
-                      color: setting === 'Logout' ? '#fca5a5' : '#fff',
-                    },
+
+                      background: 'rgba(255,255,255,0.06)',
+
+                      color: '#fff',
+
+                      transform: 'translateX(4px)',
+                    }
                   }}
                 >
-                  {setting === 'Logout'
-                    ? <LogoutIcon sx={{ fontSize: 15 }} />
-                    : <PersonIcon sx={{ fontSize: 15 }} />}
+
+                  {setting === "Logout"
+                    ? <LogoutRoundedIcon sx={{ fontSize: 18 }} />
+                    : <PersonRoundedIcon sx={{ fontSize: 18 }} />
+                  }
+
                   {setting}
+
                 </MenuItem>
               ))}
+
             </Menu>
+
           </Box>
 
         </Toolbar>
+
       </Container>
+
     </AppBar>
   );
 }
-export default TopBar
+
+export default TopBar;
+
+
