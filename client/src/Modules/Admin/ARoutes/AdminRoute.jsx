@@ -23,26 +23,15 @@ import ManageReports from '../AComponents/ManageReports'
 export default function AdminRoute() {
     return (
         <div>
-            <Sidebar />
+           
             <Routes>
+                <Route path='/' element={<Sidebar />}>
                  <Route path='/AdminLogin' element={<AdminLogin/>}/>
                  <Route path='/ManageUser' element={<ManageUser/>}/>
                  <Route path='/ManageCategory' element={<ManageCategory/>}/>
                  <Route path='/AddCategory' element={<AddCategory/>}/>
                  <Route path='/ManageReports' element={<ManageReports/>}/>
-
-                {/* <Route path='/AHome' element={<AHome />} />
-                <Route path='/ManageUser' element={<ManageUser />} /> */}
-                {/* <Route path='/ManageCategory' element={<ManageCategory />} />
-                <Route path='/ManageProduct' element={<ManageProduct />} />
-                <Route path="/AddCategory" element={<AddCategory />} /> */}
-                {/* <Route path="/ViewUser" element={<ViewUser />} /> */}
-                {/* <Route path="/ViewProduct" element={<ViewProduct />} />
-                <Route path="/ViewCategory" element={<ViewCategory />} />
-                <Route path="/UpdateCategory/:rowid" element={<UpdateCategory />} />
-                <Route path="/UpdateProduct/:rowid" element={<UpdateProduct />} /> */}
-               
-                
+                  </Route>
             </Routes>
         </div>
     )

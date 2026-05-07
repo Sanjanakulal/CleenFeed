@@ -1,120 +1,6 @@
-// import React, { useEffect, useState } from 'react'
-// import axios from 'axios'
-// import {
-//   Table, TableBody, TableCell, TableContainer,
-//   TableHead, TableRow, Paper, Button
-// } from '@mui/material'
-
-// export default function ManageReports() {
-
-//   const [reports, setReports] = useState([])
-
-//   useEffect(() => {
-//     axios.get("http://localhost:5000/post/getreports")
-//       .then((res) => {
-//         setReports(res.data.reportposts)
-//       })
-//       .catch((error) => {
-//         console.log(error)
-//       })
-//   }, [])
-
-//   const handleDelete = (id) => {
-//     axios.delete(`http://localhost:5000/post/deletepost/${id}`)
-//       .then((res) => {
-//         alert(res.data.message)
-//         setReports((prev) => prev.filter((item) => item._id !== id))
-//       })
-//   }
-
-//   return (
-//     <TableContainer
-//       component={Paper}
-//       sx={{
-//         mt: 2,
-//         width: "100%",
-//         boxShadow: "none",
-//         border: "1px solid #e5e7eb",
-//         borderRadius: "8px"
-//       }}
-//     >
-//       <Table>
-
-//         <TableHead>
-//           <TableRow sx={{ backgroundColor: "#f8f9fa" }}>
-//             <TableCell sx={{ fontWeight: 600 }}>SL.No</TableCell>
-//             <TableCell sx={{ fontWeight: 600 }}>User</TableCell>
-//             <TableCell sx={{ fontWeight: 600 }}>Trust Score</TableCell>
-//             <TableCell sx={{ fontWeight: 600 }}>Title</TableCell>
-//             <TableCell sx={{ fontWeight: 600 }}>Description</TableCell>
-//             <TableCell sx={{ fontWeight: 600 }}>Reports</TableCell>
-//             <TableCell sx={{ fontWeight: 600 }}>Reasons</TableCell>
-//             <TableCell sx={{ fontWeight: 600 }}>Status</TableCell>
-//             <TableCell sx={{ fontWeight: 600 }}>Action</TableCell>
-//           </TableRow>
-//         </TableHead>
-
-//         <TableBody>
-//           {reports.map((row, index) => (
-//             <TableRow
-//               key={row._id}
-//               hover
-//               sx={{
-//                 "&:nth-of-type(even)": {
-//                   backgroundColor: "#fcfcfc"
-//                 }
-//               }}
-//             >
-//               <TableCell>{index + 1}</TableCell>
-//               <TableCell>{row.userId?.name}</TableCell>
-//               <TableCell>{row.userId?.trustScore}</TableCell>
-//               <TableCell>{row.title}</TableCell>
-
-//               <TableCell sx={{ maxWidth: "330px", color: "#555" }}>
-//                 {row.description}
-//               </TableCell>
-
-//               <TableCell>{row.reportCount}</TableCell>
-
-//               {/* <TableCell sx={{ color: "#555" }}>
-//                 {row.reportReasons.length > 0
-//                   ? row.reportReasons.join(", ")
-//                   : "No Reasons"}
-//               </TableCell> */}
-//               <TableCell sx={{ color: "#555" }}>
-//                 {row.reportReasons.length > 0
-//                   ? [...new Set(row.reportReasons)].join(", ")
-//                   : "No Reasons"}
-//               </TableCell>
-
-//               <TableCell>
-//                 {row.isFlagged ? "Flagged" : "Reported"}
-//               </TableCell>
-
-//               <TableCell>
-//                 <Button
-//                   variant="contained"
-//                   color="error"
-//                   size="small"
-//                   onClick={() => handleDelete(row._id)}
-//                   sx={{
-//                     textTransform: "none",
-//                     boxShadow: "none"
-//                   }}
-//                 >
-//                   Delete
-//                 </Button>
-//               </TableCell>
-//             </TableRow>
-//           ))}
-//         </TableBody>
-
-//       </Table>
-//     </TableContainer>
-//   )
-// }
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+
 import {
   Table,
   TableBody,
@@ -123,7 +9,9 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Button
+  Button,
+  Box,
+  Typography
 } from '@mui/material'
 
 export default function ManageReports() {
@@ -131,150 +19,424 @@ export default function ManageReports() {
   const [reports, setReports] = useState([])
 
   useEffect(() => {
+
     axios.get("http://localhost:5000/post/getreports")
+
       .then((res) => {
+
         setReports(res.data.reportposts)
+
       })
+
       .catch((error) => {
+
         console.log(error)
       })
+
   }, [])
 
 
 
+  /* ORIGINAL FUNCTIONALITY KEPT */
+
   const handleDelete = (id) => {
-  const token = localStorage.getItem("UserToken");
 
-  axios.delete(`http://localhost:5000/post/deletepost/${id}`, {
-    headers: {
-      "auth-token": token   
-    }
-  })
-  .then((res) => {
-    alert(res.data.message);
-    fetchReports();   
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-};
+    const token = localStorage.getItem("UserToken");
+
+    axios.delete(`http://localhost:5000/post/deletepost/${id}`, {
+
+      headers: {
+
+        "auth-token": token
+      }
+    })
+
+      .then((res) => {
+
+        alert(res.data.message);
+
+        fetchReports();
+
+      })
+
+      .catch((err) => {
+
+        console.log(err);
+      });
+  };
+
+
+
   return (
-    <TableContainer
-      component={Paper}
-      sx={{
-        mt: 2,
-        width: "100%",
-        borderRadius: "12px",
-        overflow: "hidden",
-        border: "1px solid #d1d5db",
-        boxShadow: "0 4px 14px rgba(0,0,0,0.05)"
-      }}
-    >
-      <Table>
 
-        <TableHead>
-          <TableRow
+    <Box>
+
+      {/* HEADER */}
+
+      <Box
+
+        sx={{
+
+          mb: 2.5,
+
+          display: "flex",
+
+          justifyContent: "space-between",
+
+          alignItems: "center",
+
+          flexWrap: "wrap",
+
+          gap: 2,
+        }}
+      >
+
+        <Box>
+
+          <Typography
+
             sx={{
-              backgroundColor: "#e5e7eb"
+
+              color: "#ffffff",
+
+              fontSize: "26px",
+
+              fontWeight: 700,
+
+              letterSpacing: "-0.03em",
             }}
           >
-            <TableCell sx={{ fontWeight: 700, color: "#111827" }}>SL.No</TableCell>
-            <TableCell sx={{ fontWeight: 700, color: "#111827" }}>User</TableCell>
-            <TableCell sx={{ fontWeight: 700, color: "#111827" }}>Trust Score</TableCell>
-            <TableCell sx={{ fontWeight: 700, color: "#111827" }}>Title</TableCell>
-            <TableCell sx={{ fontWeight: 700, color: "#111827" }}>Description</TableCell>
-            <TableCell sx={{ fontWeight: 700, color: "#111827" }}>Reports</TableCell>
-            <TableCell sx={{ fontWeight: 700, color: "#111827" }}>Reasons</TableCell>
-            <TableCell sx={{ fontWeight: 700, color: "#111827" }}>Status</TableCell>
-            <TableCell sx={{ fontWeight: 700, color: "#111827" }}>Action</TableCell>
-          </TableRow>
-        </TableHead>
+            Reports
+          </Typography>
 
-        <TableBody>
-          {reports.map((row, index) => (
+          <Typography
+
+            sx={{
+
+              color: "#94a3b8",
+
+              fontSize: "13px",
+
+              mt: 0.3
+            }}
+          >
+            Monitor flagged and reported posts
+          </Typography>
+
+        </Box>
+
+        {/* TOTAL */}
+
+        <Box
+
+          sx={{
+
+            px: 1.8,
+
+            py: 0.8,
+
+            borderRadius: "10px",
+
+            background: "rgba(239,68,68,0.10)",
+
+            border: "1px solid rgba(239,68,68,0.16)",
+
+            color: "#fca5a5",
+
+            fontSize: "13px",
+
+            fontWeight: 600,
+          }}
+        >
+          Total : {reports.length}
+        </Box>
+
+      </Box>
+
+      {/* TABLE */}
+
+      <TableContainer
+
+        component={Paper}
+
+        sx={{
+
+          background: "rgba(15,23,42,0.78)",
+
+          border: "1px solid rgba(255,255,255,0.06)",
+
+          borderRadius: "18px",
+
+          overflow: "hidden",
+
+          boxShadow: "0 12px 30px rgba(0,0,0,0.22)",
+
+          backdropFilter: "blur(14px)",
+        }}
+      >
+
+        <Table>
+
+          {/* HEAD */}
+
+          <TableHead>
+
             <TableRow
-              key={row._id}
-              hover
+
               sx={{
-                "&:nth-of-type(even)": {
-                  backgroundColor: "#f3f4f6"
-                },
-                "&:hover": {
-                  backgroundColor: "#e0f2fe"
-                },
-                "& td": {
-                  borderBottom: "1px solid #d1d5db"
-                }
+
+                background: "rgba(255,255,255,0.03)",
               }}
             >
-              <TableCell sx={{ color: "#111827" }}>
-                {index + 1}
-              </TableCell>
 
-              <TableCell sx={{ fontWeight: 500, color: "#111827" }}>
-                {row.userId?.name}
-              </TableCell>
+              {[
+                "SL.No",
+                "User",
+                "Trust Score",
+                "Title",
+                "Description",
+                "Reports",
+                "Reasons",
+                "Status",
+                "Action"
+              ].map((item) => (
 
-              <TableCell sx={{ color: "#111827" }}>
-                {row.userId?.trustScore}
-              </TableCell>
+                <TableCell
 
-              <TableCell sx={{ fontWeight: 500, color: "#111827" }}>
-                {row.title}
-              </TableCell>
+                  key={item}
 
-              <TableCell sx={{ maxWidth: "330px", color: "#374151" }}>
-                {row.description}
-              </TableCell>
+                  sx={{
 
-              <TableCell sx={{ color: "#111827" }}>
-                {row.reportCount}
-              </TableCell>
+                    color: "#94a3b8",
 
-              <TableCell sx={{ color: "#374151" }}>
-                {row.reportReasons.length > 0
-                  ? [...new Set(row.reportReasons)].join(", ")
-                  : "No Reasons"}
-              </TableCell>
+                    fontWeight: 700,
 
-              <TableCell>
-                <span
-                  style={{
-                    padding: "4px 10px",
-                    borderRadius: "20px",
-                    fontSize: "13px",
-                    fontWeight: "600",
-                    backgroundColor: row.isFlagged ? "#fef3c7" : "#fee2e2",
-                    color: row.isFlagged ? "#92400e" : "#b91c1c"
+                    fontSize: "11.5px",
+
+                    borderBottom:
+                      "1px solid rgba(255,255,255,0.06)",
+
+                    py: 1.8,
                   }}
                 >
-                  {row.isFlagged ? "Flagged" : "Reported"}
-                </span>
-              </TableCell>
+                  {item}
+                </TableCell>
 
-              <TableCell>
-                <Button
-                  variant="contained"
-                  color="error"
-                  size="small"
-                  onClick={() => handleDelete(row._id)}
+              ))}
+
+            </TableRow>
+
+          </TableHead>
+
+          {/* BODY */}
+
+          <TableBody>
+
+            {reports.map((row, index) => (
+
+              <TableRow
+
+                key={row._id}
+
+                sx={{
+
+                  transition: "0.2s ease",
+
+                  '&:hover': {
+
+                    background:
+                      "rgba(255,255,255,0.02)",
+                  },
+
+                  "& td": {
+
+                    borderBottom:
+                      "1px solid rgba(255,255,255,0.05)"
+                  }
+                }}
+              >
+
+                <TableCell sx={cellStyle}>
+                  {index + 1}
+                </TableCell>
+
+                <TableCell
+
                   sx={{
-                    textTransform: "none",
-                    borderRadius: "8px",
-                    px: 2,
-                    boxShadow: "none",
+
+                    ...cellStyle,
+
+                    color: "#ffffff",
+
                     fontWeight: 600
                   }}
                 >
-                  Delete
-                </Button>
-              </TableCell>
+                  {row.userId?.name}
+                </TableCell>
 
-            </TableRow>
-          ))}
-        </TableBody>
+                <TableCell sx={cellStyle}>
+                  {row.userId?.trustScore}
+                </TableCell>
 
-      </Table>
-    </TableContainer>
+                <TableCell
+
+                  sx={{
+
+                    ...cellStyle,
+
+                    color: "#ffffff",
+
+                    fontWeight: 500
+                  }}
+                >
+                  {row.title}
+                </TableCell>
+
+                <TableCell
+
+                  sx={{
+
+                    ...cellStyle,
+
+                    maxWidth: "260px",
+
+                    lineHeight: 1.5,
+                  }}
+                >
+                  {row.description}
+                </TableCell>
+
+                <TableCell sx={cellStyle}>
+                  {row.reportCount}
+                </TableCell>
+
+                <TableCell
+
+                  sx={{
+
+                    ...cellStyle,
+
+                    maxWidth: "220px",
+
+                    lineHeight: 1.5,
+                  }}
+                >
+                  {row.reportReasons.length > 0
+                    ? [...new Set(row.reportReasons)].join(", ")
+                    : "No Reasons"}
+                </TableCell>
+
+                {/* STATUS */}
+
+                <TableCell sx={cellStyle}>
+
+                  <Box
+
+                    sx={{
+
+                      display: "inline-flex",
+
+                      alignItems: "center",
+
+                      px: 1.5,
+
+                      py: 0.6,
+
+                      borderRadius: "999px",
+
+                      fontSize: "12.5px",
+
+                      fontWeight: 700,
+
+                      background: row.isFlagged
+                        ? "rgba(245,158,11,0.12)"
+                        : "rgba(239,68,68,0.12)",
+
+                      color: row.isFlagged
+                        ? "#fbbf24"
+                        : "#f87171",
+
+                      border: row.isFlagged
+                        ? "1px solid rgba(245,158,11,0.18)"
+                        : "1px solid rgba(239,68,68,0.18)"
+                    }}
+                  >
+                    {row.isFlagged
+                      ? "Flagged"
+                      : "Reported"}
+                  </Box>
+
+                </TableCell>
+
+                {/* DELETE */}
+
+                <TableCell sx={cellStyle}>
+
+                  <Button
+
+                    variant="contained"
+
+                    size="small"
+
+                    onClick={() => handleDelete(row._id)}
+
+                    sx={{
+
+                      minWidth: "38px",
+
+                      width: "38px",
+
+                      height: "38px",
+
+                      borderRadius: "10px",
+
+                      background:
+                        "rgba(239,68,68,0.14)",
+
+                      color: "#fca5a5",
+
+                      border:
+                        "1px solid rgba(239,68,68,0.18)",
+
+                      fontSize: "15px",
+
+                      p: 0,
+
+                      boxShadow: "none",
+
+                      '&:hover': {
+
+                        background:
+                          "rgba(239,68,68,0.22)",
+
+                        boxShadow: "none",
+                      }
+                    }}
+                  >
+                    🗑
+                  </Button>
+
+                </TableCell>
+
+              </TableRow>
+
+            ))}
+
+          </TableBody>
+
+        </Table>
+
+      </TableContainer>
+
+    </Box>
   )
 }
+
+const cellStyle = {
+
+  color: "#cbd5e1",
+
+  py: 1.4,
+
+  fontSize: "14px",
+};
